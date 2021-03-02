@@ -8,3 +8,9 @@ edition = "2018"
 
 [dependencies]
 clap = "2.33.3"
+glob = "0.3.0"
+walkdir = "2.3.1"
+
+[[bin]]
+name = "spr"
+path = "src/main.rs"

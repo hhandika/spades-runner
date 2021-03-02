@@ -3,7 +3,10 @@
 // MIT
 
 mod cli;
+mod finder;
+mod input;
 mod runner;
+
 
 use std::time::Instant;
 

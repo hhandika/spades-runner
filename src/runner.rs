@@ -26,7 +26,7 @@ pub fn check_spades() {
     }
 }
 
-
+#[allow(dead_code)]
 pub fn run_spades(forward: &PathBuf, reverse: &PathBuf, outdir: &PathBuf) {
     fs::create_dir_all(outdir).unwrap();
     let mut out = Command::new("spades")

@@ -4,6 +4,7 @@
 use clap::{App, AppSettings, Arg, ArgMatches};
 
 use crate::runner;
+use crate::input;
 
 #[allow(dead_code)]
 pub fn get_cli(version: &str) {
@@ -20,6 +21,25 @@ pub fn get_cli(version: &str) {
         .subcommand(
             App::new("auto")
                 .about("Auto find clean reads and assembly them")
+                .arg(
+                    Arg::with_name("dir")
+                        .short("d")
+                        .long("dir")
+                        .help("Inputs a directory for auto search")
+                        .takes_value(true)
+                        .value_name("CLEAN-READ DIR")
+                        .required(true)
+                )
+
+                .arg(
+                    Arg::with_name("specify")
+                        .short("s")
+                        .long("specify")
+                        .help("Specifies clean read directory names")
+                        .takes_value(true)
+                        .default_value("trimmed")
+                        .value_name("DIR NAME")
+                )
             )
 
         .subcommand(
@@ -46,10 +66,21 @@ pub fn get_cli(version: &str) {
         .get_matches();
 
     match args.subcommand() {
-        ("clean", Some(_)) => runner::test_spades(),
+        ("auto", Some(assembly_matches)) => run_spades_auto(assembly_matches, version),
+        ("assembly", Some(_)) => runner::test_spades(),
         ("check", Some(_)) => runner::check_spades(),
         _ => (),
     };
+}
+
+fn run_spades_auto(matches: &ArgMatches, version: &str) {
+    let path = matches.value_of("dir").unwrap();
+    let dirname = matches.value_of("specify").unwrap();
+
+    println!("Starting spade-runner v{}\n", version);
+    
+    input::auto_find_reads(path, &dirname);
+
 }
 
 // fn run_fastp_clean(matches: &ArgMatches, version: &str) {
