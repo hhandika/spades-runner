@@ -9,7 +9,7 @@ use crate::runner;
 pub fn get_cli(version: &str) {
     let args = App::new("renamer")
         .version(version)
-        .about("Batch sequence assembly using Spades")
+        .about("Batch sequence assembly using SPAdes")
         .author("Heru Handika <hhandi1@lsu.edu>")
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .subcommand(
@@ -24,7 +24,7 @@ pub fn get_cli(version: &str) {
 
         .subcommand(
             App::new("assembly")
-                .about("Runs spades")
+                .about("Runs SPAdes")
                 .arg(
                     Arg::with_name("input")
                         .short("i")

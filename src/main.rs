@@ -12,7 +12,7 @@ use clap::crate_version;
 fn main() {
     let version = crate_version!();
     let time = Instant::now();
-    runner::check_spades();
+    cli::get_cli(&version);
     let duration = time.elapsed();
 
     println!("Execution time: {:?}", duration);
