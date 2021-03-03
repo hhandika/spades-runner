@@ -12,8 +12,8 @@ pub fn find_cleaned_fastq(path: &str, dirname: &str)  -> Vec<SeqReads> {
         .for_each(|e| {
             let dir = e.path().to_string_lossy();
             if dir.contains(dirname) {
-                let mut files = SeqReads::new(&dir);
                 let fastq = glob_fastq(&dir);
+                let mut files = SeqReads::new(&dir);
                 files.match_reads(&fastq);
                 files.get_target_dir();
                 if !files.read_1.as_os_str().is_empty() {
