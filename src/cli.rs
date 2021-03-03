@@ -4,7 +4,7 @@
 use clap::{App, AppSettings, Arg, ArgMatches};
 
 use crate::runner;
-use crate::input;
+use crate::io;
 
 #[allow(dead_code)]
 pub fn get_cli(version: &str) {
@@ -39,6 +39,13 @@ pub fn get_cli(version: &str) {
                         .takes_value(true)
                         .default_value("trimmed")
                         .value_name("DIR NAME")
+                )
+
+                .arg(
+                    Arg::with_name("dry-run")
+                        .long("dry")
+                        .help("Checks if the program can find the correct files")
+                        .takes_value(false)
                 )
             )
 
@@ -79,29 +86,9 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
 
     println!("Starting spade-runner v{}\n", version);
     
-    input::auto_find_reads(path, &dirname);
-
+    if matches.is_present("dry-run") {
+        io::dry_run(path, &dirname)
+    } else {
+        io::auto_find_reads(path, &dirname);
+    }
 }
-
-// fn run_fastp_clean(matches: &ArgMatches, version: &str) {
-//     if matches.is_present("input") {
-//         let path = PathBuf::from(matches.value_of("input").unwrap());
-//         let mut is_id = false;
-//         let mut is_rename = false;
-
-//         if matches.is_present("id") {
-//             is_id = true;
-//         }
-
-//         if matches.is_present("rename") {
-//             is_rename = true;
-//         }
-
-//         if matches.is_present("dry-run") {
-//             io::dry_run(&path, is_id, is_rename);
-//         } else {
-//             println!("Starting fastp-runner v{}...\n", version);
-//             io::process_input(&path, is_id, is_rename);
-//         }
-//     } 
-// }

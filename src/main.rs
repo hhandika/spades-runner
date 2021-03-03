@@ -4,7 +4,7 @@
 
 mod cli;
 mod finder;
-mod input;
+mod io;
 mod runner;
 
 
