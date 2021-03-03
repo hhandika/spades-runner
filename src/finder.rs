@@ -26,7 +26,7 @@ pub fn find_cleaned_fastq(path: &str, dirname: &str)  -> Vec<SeqReads> {
 }
 
 fn glob_fastq(path: &str) -> Vec<PathBuf> {
-    let pattern = format!("{}/*.f*.gz", path);
+    let pattern = format!("{}/*.f*.g*", path);
 
     let opts = MatchOptions {
         case_sensitive: true,
@@ -77,5 +77,18 @@ impl SeqReads {
                 }
             })
         
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn glob_test() {
+        let input = "test_files/";
+
+        let res = glob_fastq(&input);
+        assert_eq!(2, res.len());
     }
 }
