@@ -16,9 +16,11 @@ pub fn find_cleaned_fastq(path: &str, dirname: &str)  -> Vec<SeqReads> {
                 let fastq = glob_fastq(&dir);
                 files.match_reads(&fastq);
                 files.get_target_dir();
-                entries.push(files);
+                if !files.read_1.as_os_str().is_empty() {
+                    entries.push(files);
+                }
             }
-        });
+        }); 
     
     entries                    
 }

@@ -16,11 +16,10 @@ pub fn display_dryrun(dirs: &[SeqReads]) -> Result<()> {
     let out = io::stdout();
     let mut handle = io::BufWriter::new(out);
 
-    writeln!(handle,"\x1b[0;33mDIR LIST:\n\x1b[0m")?;
-
+    writeln!(handle,"\x1b[0;33mTotal samples: {}\n\x1b[0m", dirs.len())?;
     dirs.iter()
         .for_each(|e| {
-            writeln!(handle,"\x1b[0;34mOrigin\t\t: {}\x1b[0m", e.dir.to_string_lossy()).unwrap();
+            writeln!(handle,"\x1b[0;32mOrigin\t\t: {}\x1b[0m", e.dir.to_string_lossy()).unwrap();
             writeln!(handle,"Read 1\t\t: {}", e.read_1.to_string_lossy()).unwrap();
             writeln!(handle,"Read 2\t\t: {}", e.read_2.to_string_lossy()).unwrap();
 
