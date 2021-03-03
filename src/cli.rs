@@ -74,7 +74,7 @@ pub fn get_cli(version: &str) {
 
     match args.subcommand() {
         ("auto", Some(assembly_matches)) => run_spades_auto(assembly_matches, version),
-        ("assembly", Some(_)) => runner::test_spades(),
+        ("assembly", Some(_)) => runner::check_spades(),
         ("check", Some(_)) => runner::check_spades(),
         _ => (),
     };
