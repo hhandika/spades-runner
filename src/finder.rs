@@ -127,4 +127,20 @@ mod test {
                 assert_eq!(PathBuf::from("trimmed_test"), e.target_dir);
             })
     }
+
+    #[test]
+    fn get_cleaned_fastq_test() {
+        let dir = "test_files/trimmed_test";
+        let mut res = Vec::new();
+
+        get_cleaned_fastq(&dir, &mut res);
+        let path = PathBuf::from(dir);
+        let r1 = path.join("some_seq_ABC123_R1.fq.gz");
+        let r2 = path.join("some_seq_ABC123_R2.fq.gz");
+        res.iter()
+            .for_each(|e| {
+                assert_eq!(r1, e.read_1);
+                assert_eq!(r2, e.read_2);
+            })
+    }
 }
