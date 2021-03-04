@@ -12,18 +12,23 @@ pub fn find_cleaned_fastq(path: &str, dirname: &str)  -> Vec<SeqReads> {
         .for_each(|e| {
             let dir = e.path().to_string_lossy();
             if dir.contains(dirname) {
-                get_cleaned_fastq(&dir, &mut entries);
+                let target = None;
+                get_cleaned_fastq(&dir, &mut entries, target);
             }
         }); 
     
     entries                    
 }
 
-fn get_cleaned_fastq(dir: &str, entries: &mut Vec<SeqReads>) {
+fn get_cleaned_fastq(
+    dir: &str, 
+    entries: &mut Vec<SeqReads>, 
+    target: Option<String>
+) {
     let mut files = SeqReads::new(&dir);
     let fastq = files.glob_fastq();
     files.match_reads(&fastq);
-    files.get_target_dir();
+    files.get_target_dir(target);
 
     if !files.read_1.as_os_str().is_empty() {
         entries.push(files);
@@ -79,10 +84,14 @@ impl SeqReads {
         
     }
 
-    fn get_target_dir(&mut self) {
+    fn get_target_dir(&mut self, target: Option<String>) {
         let dirs: Vec<_> = self.dir.components().map(|d| d.as_os_str()).collect();
 
-        self.target_dir = PathBuf::from(dirs[1]);
+        if target.is_none() {
+            self.target_dir = PathBuf::from(dirs[1]);
+        } else {
+            self.target_dir = PathBuf::from(target.as_ref().unwrap());
+        }
     }
 }
 
@@ -133,7 +142,7 @@ mod test {
         let dir = "test_files/trimmed_test";
         let mut res = Vec::new();
 
-        get_cleaned_fastq(&dir, &mut res);
+        get_cleaned_fastq(&dir, &mut res, None);
         let path = PathBuf::from(dir);
         let r1 = path.join("some_seq_ABC123_R1.fq.gz");
         let r2 = path.join("some_seq_ABC123_R2.fq.gz");
