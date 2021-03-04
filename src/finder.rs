@@ -85,9 +85,9 @@ impl SeqReads {
     }
 
     fn get_target_dir(&mut self, target: Option<String>) {
-        let dirs: Vec<_> = self.dir.components().map(|d| d.as_os_str()).collect();
-
         if target.is_none() {
+            let dirs: Vec<_> = self.dir.components().map(|d| d.as_os_str()).collect();
+            assert!(dirs.len() > 1, "INVALID FOLDER STRUCTURE TO USE AUTO");
             self.target_dir = PathBuf::from(dirs[1]);
         } else {
             self.target_dir = PathBuf::from(target.as_ref().unwrap());
