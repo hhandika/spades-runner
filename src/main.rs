@@ -6,6 +6,7 @@ mod cli;
 mod finder;
 mod io;
 mod runner;
+mod utils;
 
 
 use std::time::Instant;

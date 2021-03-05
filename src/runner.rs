@@ -2,11 +2,12 @@ use std::io::{self, Result, Write};
 use std::process::{Command, Output};
 use std::str;
 use std::path::{Path, PathBuf};
-use std::fs;
+
 
 use spinners::{Spinner, Spinners};
 
 use crate::finder::SeqReads;
+use crate::utils;
 
 pub fn check_spades() {
     let out = Command::new("spades")
@@ -23,7 +24,7 @@ pub fn check_spades() {
 
 pub fn assemble_reads(reads: &[SeqReads]) {
     let dir = Path::new("assembly");
-    check_dir_exists(&dir);
+    utils::check_dir_exists(&dir);
     reads.iter()
         .for_each(|r| {
             println!("\x1b[0;33m================Processing {}================\x1b[0m", &r.target_dir.to_string_lossy());
@@ -31,16 +32,6 @@ pub fn assemble_reads(reads: &[SeqReads]) {
             run.display_settings().unwrap();
             run.run_spades();
         })
-}
-
-
-fn check_dir_exists(dir: &Path) {
-    if dir.exists() {
-        panic!("{:?} DIR EXISTS. PLEASE RENAME OR REMOVE IT", dir);
-    } else { // if not create one
-        fs::create_dir_all(dir)
-            .expect("CAN'T CREATE CLEAN READ DIR");
-    }
 }
 
 struct Runner<'a> {
@@ -63,7 +54,7 @@ impl<'a> Runner<'a> {
         let out = self.call_spades();
         self.check_spades_success(&out);
         spin.stop();
-        self.print_done();
+        utils::print_done().unwrap();
         // self.create_symlink();
     }
 
@@ -72,12 +63,6 @@ impl<'a> Runner<'a> {
             io::stdout().write_all(&out.stdout).unwrap();
             io::stdout().write_all(&out.stderr).unwrap();
         }
-    }
-
-    fn print_done(&self) {
-        let stdout = io::stdout();
-        let mut handle = stdout.lock();
-        writeln!(handle, "\x1b[0;32mDONE!\x1b[0m").unwrap();
     }
 
     fn call_spades(&self) -> Output {
