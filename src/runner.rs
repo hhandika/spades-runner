@@ -63,6 +63,7 @@ impl<'a> Runner<'a> {
         let out = self.call_spades();
         self.check_spades_success(&out);
         spin.stop();
+        self.print_done();
         // self.create_symlink();
     }
 
@@ -71,6 +72,12 @@ impl<'a> Runner<'a> {
             io::stdout().write_all(&out.stdout).unwrap();
             io::stdout().write_all(&out.stderr).unwrap();
         }
+    }
+
+    fn print_done(&self) {
+        let stdout = io::stdout();
+        let mut handle = stdout.lock();
+        writeln!(handle, "\x1b[0;32mDONE!\x1b[0m").unwrap();
     }
 
     fn call_spades(&self) -> Output {
