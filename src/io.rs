@@ -1,10 +1,11 @@
 use std::io::{self, Result, Write};
 
 use crate::finder::{self, SeqReads};
+use crate::runner;
 
-pub fn auto_find_reads(path: &str, dirname: &str) {
+pub fn auto_run_reads(path: &str, dirname: &str) {
     let dirs = finder::find_cleaned_fastq(path, dirname);
-    display_dryrun(&dirs).unwrap();
+    runner::assemble_reads(&dirs);
 }
 
 pub fn dry_run(path: &str, dirname: &str) {

@@ -1,12 +1,10 @@
 // use std::path::PathBuf;
-
-#[allow(dead_code)]
 use clap::{App, AppSettings, Arg, ArgMatches};
 
 use crate::runner;
 use crate::io;
 
-#[allow(dead_code)]
+
 pub fn get_cli(version: &str) {
     let args = App::new("renamer")
         .version(version)
@@ -89,6 +87,6 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
     if matches.is_present("dry-run") {
         io::dry_run(path, &dirname)
     } else {
-        io::auto_find_reads(path, &dirname);
+        io::auto_run_reads(path, &dirname);
     }
 }

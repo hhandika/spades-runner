@@ -10,6 +10,7 @@ edition = "2018"
 clap = "2.33.3"
 glob = "0.3.0"
 walkdir = "2.3.1"
+spinners = "1.2.0"
 
 [[bin]]
 name = "spr"
