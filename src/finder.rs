@@ -28,7 +28,7 @@ fn get_cleaned_fastq(
     let mut files = SeqReads::new(&dir);
     let fastq = files.glob_fastq();
     files.match_reads(&fastq);
-    files.get_target_dir(target);
+    files.get_id(target);
 
     if !files.read_1.as_os_str().is_empty() {
         entries.push(files);
@@ -37,7 +37,7 @@ fn get_cleaned_fastq(
 
 pub struct SeqReads {
     pub dir: PathBuf,
-    pub target_dir: PathBuf, 
+    pub id: PathBuf, 
     pub read_1: PathBuf,
     pub read_2: PathBuf,
     pub singleton: Option<PathBuf>
@@ -47,7 +47,7 @@ impl SeqReads {
     fn new(dir: &str) -> Self {
         Self {
             dir: PathBuf::from(dir),
-            target_dir: PathBuf::new(),
+            id: PathBuf::new(),
             read_1: PathBuf::new(),
             read_2: PathBuf::new(),
             singleton: None,
@@ -84,13 +84,13 @@ impl SeqReads {
         
     }
 
-    fn get_target_dir(&mut self, target: Option<String>) {
+    fn get_id(&mut self, target: Option<String>) {
         if target.is_none() {
             let dirs: Vec<_> = self.dir.components().map(|d| d.as_os_str()).collect();
             assert!(dirs.len() > 1, "INVALID FOLDER STRUCTURE TO USE AUTO");
-            self.target_dir = PathBuf::from(dirs[1]);
+            self.id = PathBuf::from(dirs[1]);
         } else {
-            self.target_dir = PathBuf::from(target.as_ref().unwrap());
+            self.id = PathBuf::from(target.as_ref().unwrap());
         }
     }
 }
@@ -133,7 +133,7 @@ mod test {
             .for_each(|e| {
                 assert_eq!(r1, e.read_1);
                 assert_eq!(r2, e.read_2);
-                assert_eq!(PathBuf::from("trimmed_test"), e.target_dir);
+                assert_eq!(PathBuf::from("trimmed_test"), e.id);
             })
     }
 
