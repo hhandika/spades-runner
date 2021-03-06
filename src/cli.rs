@@ -1,6 +1,7 @@
-// use std::path::PathBuf;
+use std::path::PathBuf;
 use clap::{App, AppSettings, Arg, ArgMatches};
 
+use crate::cleaner;
 use crate::runner;
 use crate::io;
 
@@ -67,6 +68,20 @@ pub fn get_cli(version: &str) {
                 )
 
         )
+
+        .subcommand(
+            App::new("clean")
+                .about("Checks if fastp is installed")
+                .arg(
+                    Arg::with_name("dir")
+                        .short("d")
+                        .long("dir")
+                        .help("Inputs a directory for cleaning")
+                        .takes_value(true)
+                        .value_name("DIR")
+                        .required(true)
+                )
+            )
         
         .get_matches();
 
@@ -74,6 +89,7 @@ pub fn get_cli(version: &str) {
         ("auto", Some(assembly_matches)) => run_spades_auto(assembly_matches, version),
         ("assembly", Some(_)) => runner::check_spades(),
         ("check", Some(_)) => runner::check_spades(),
+        ("clean", Some(clean_matches)) => clean_spades_files(clean_matches),
         _ => (),
     };
 }
@@ -89,4 +105,9 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
     } else {
         io::auto_run_reads(path, &dirname);
     }
+}
+
+fn clean_spades_files(matches: &ArgMatches) {
+    let path = PathBuf::from(matches.value_of("dir").unwrap());
+    cleaner::clean_spades_files(&path);
 }
