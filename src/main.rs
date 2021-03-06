@@ -6,6 +6,7 @@ mod cleaner;
 mod cli;
 mod finder;
 mod io;
+mod parser;
 mod runner;
 mod utils;
 
