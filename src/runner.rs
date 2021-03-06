@@ -1,8 +1,8 @@
 use std::io::{self, Result, Write};
+use std::os::unix;
 use std::process::{Command, Output};
 use std::str;
 use std::path::{Path, PathBuf};
-
 
 use spinners::{Spinner, Spinners};
 
@@ -23,7 +23,7 @@ pub fn check_spades() {
 }
 
 pub fn assemble_reads(reads: &[SeqReads]) {
-    let dir = Path::new("assembly");
+    let dir = Path::new("assemblies");
     utils::check_dir_exists(&dir);
     reads.iter()
         .for_each(|r| {
@@ -37,7 +37,7 @@ pub fn assemble_reads(reads: &[SeqReads]) {
 struct Runner<'a> {
     reads: &'a SeqReads,
     output: PathBuf,
-    // contig_dir: PathBuf, 
+    symlink_dir: PathBuf, 
 }
 
 impl<'a> Runner<'a> {
@@ -45,7 +45,7 @@ impl<'a> Runner<'a> {
         Self {
             reads: input,
             output: dir.join(&input.target_dir),
-            // contig_dir: PathBuf::from("contigs"),
+            symlink_dir: dir.join("contig_symlinks"),
         }
     }
 
@@ -55,7 +55,7 @@ impl<'a> Runner<'a> {
         self.check_spades_success(&out);
         spin.stop();
         utils::print_done().unwrap();
-        // self.create_symlink();
+        self.create_symlink();
     }
 
     fn check_spades_success(&self, out: &Output) {
@@ -82,9 +82,9 @@ impl<'a> Runner<'a> {
     fn get_default_args(&self, out: &mut Command) {
         out.arg("--careful");
     }
-
+ 
     fn set_spinner(&mut self) -> Spinner {
-        let msg = "Spades is processing...\t".to_string();
+        let msg = "SPAdes is processing...\t".to_string();
         
         Spinner::new(Spinners::Moon, msg)
     }
@@ -93,7 +93,6 @@ impl<'a> Runner<'a> {
         let stdout = io::stdout();
         let mut buff = io::BufWriter::new(stdout);
         
-        // writeln!(buff).unwrap();
         writeln!(buff, "Target dir\t: {}", &self.reads.target_dir.to_string_lossy())?;
         writeln!(buff, "Input R1\t: {}", &self.reads.read_1.to_string_lossy())?;
         writeln!(buff, "Input R2\t: {}", &self.reads.read_2.to_string_lossy())?;
@@ -103,7 +102,15 @@ impl<'a> Runner<'a> {
         Ok(())
     }
 
-    // fn create_symlink() {
+    fn create_symlink(&self) {
+        let contigs_path = self.output.join("contigs.fasta");
 
-    // }
+        if contigs_path.is_file() {
+            let path = contigs_path.canonicalize().unwrap();
+            let symlink = self.symlink_dir.join(path.file_name().unwrap());
+            unix::fs::symlink(path, symlink).unwrap();
+        } else {
+            println!("A contig file is not found.");
+        }
+    }
 }
