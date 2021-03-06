@@ -1,3 +1,6 @@
+# v0.2.0
+- Add input option using a csv or an ini file.
+
 # v0.1.1
 - Update symlink names. Now, it ends with _contigs.fasta
 - Fix inconsistent terminal display.
