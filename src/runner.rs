@@ -1,3 +1,4 @@
+use std::fs;
 use std::io::{self, Result, Write};
 use std::os::unix;
 use std::process::{Command, Output};
@@ -25,10 +26,13 @@ pub fn check_spades() {
 pub fn assemble_reads(reads: &[SeqReads]) {
     let dir = Path::new("assemblies");
     utils::check_dir_exists(&dir);
+    let contig_dir = dir.join("contig_symlinks");
+    fs::create_dir_all(&contig_dir).unwrap();
+
     reads.iter()
         .for_each(|r| {
-            println!("\x1b[0;33m================Processing {}================\x1b[0m", &r.target_dir.to_string_lossy());
-            let mut run = Runner::new(&dir, r);
+            println!("\x1b[0;33m================Processing {}================\x1b[0m", &r.id.to_string_lossy());
+            let mut run = Runner::new(&dir, &contig_dir, r);
             run.display_settings().unwrap();
             run.run_spades();
         })
@@ -37,15 +41,15 @@ pub fn assemble_reads(reads: &[SeqReads]) {
 struct Runner<'a> {
     reads: &'a SeqReads,
     output: PathBuf,
-    symlink_dir: PathBuf, 
+    symlink_dir: &'a Path, 
 }
 
 impl<'a> Runner<'a> {
-    fn new(dir: &Path, input: &'a SeqReads) -> Self {
+    fn new(dir: &Path, contig_dir: &'a Path, input: &'a SeqReads) -> Self {
         Self {
             reads: input,
-            output: dir.join(&input.target_dir),
-            symlink_dir: dir.join("contig_symlinks"),
+            output: dir.join(&input.id),
+            symlink_dir: contig_dir,
         }
     }
 
@@ -93,7 +97,7 @@ impl<'a> Runner<'a> {
         let stdout = io::stdout();
         let mut buff = io::BufWriter::new(stdout);
         
-        writeln!(buff, "Target dir\t: {}", &self.reads.target_dir.to_string_lossy())?;
+        writeln!(buff, "Target dir\t: {}", &self.reads.id.to_string_lossy())?;
         writeln!(buff, "Input R1\t: {}", &self.reads.read_1.to_string_lossy())?;
         writeln!(buff, "Input R2\t: {}", &self.reads.read_2.to_string_lossy())?;
         writeln!(buff, "Output\t\t: {}", &self.output.to_string_lossy())?;
@@ -103,11 +107,12 @@ impl<'a> Runner<'a> {
     }
 
     fn create_symlink(&self) {
+        let contig_sym = format!("{}.fasta", self.reads.id.to_string_lossy());
         let contigs_path = self.output.join("contigs.fasta");
 
         if contigs_path.is_file() {
             let path = contigs_path.canonicalize().unwrap();
-            let symlink = self.symlink_dir.join(path.file_name().unwrap());
+            let symlink = self.symlink_dir.join(contig_sym);
             unix::fs::symlink(path, symlink).unwrap();
         } else {
             println!("A contig file is not found.");
