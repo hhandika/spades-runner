@@ -18,3 +18,9 @@ pub fn print_done() -> Result<()> {
 
     Ok(())
 }
+
+pub fn split_strings(lines: &str, sep: char) -> Vec<String> {
+    lines.split(sep)
+        .map(|e| e.trim().to_string())
+        .collect()
+}
