@@ -3,7 +3,9 @@ use std::path::PathBuf;
 use glob::{self, MatchOptions};
 use walkdir::WalkDir;
 
-pub fn find_cleaned_fastq(path: &str, dirname: &str)  -> Vec<SeqReads> {
+use crate::parser::SeqDirs;
+
+pub fn auto_find_cleaned_fastq(path: &str, dirname: &str)  -> Vec<SeqReads> {
     let mut entries = Vec::new();
 
     WalkDir::new(path).into_iter()
@@ -18,6 +20,17 @@ pub fn find_cleaned_fastq(path: &str, dirname: &str)  -> Vec<SeqReads> {
         }); 
     
     entries                    
+}
+
+pub fn find_cleaned_fastq(dirs: &[SeqDirs])  -> Vec<SeqReads> {
+    let mut entries = Vec::new();
+
+    dirs.iter()
+        .for_each(|s| {
+            get_cleaned_fastq(&s.dir, &mut entries, Some(s.id.clone()))
+        });
+    
+    entries
 }
 
 fn get_cleaned_fastq(
@@ -114,7 +127,7 @@ mod test {
         let input = "test_files/";
         let dirname = "trimmed";
 
-        let res = find_cleaned_fastq(&input, &dirname);
+        let res = auto_find_cleaned_fastq(&input, &dirname);
 
         assert_eq!(1, res.len());
     }
@@ -124,7 +137,7 @@ mod test {
         let input = "test_files/";
         let dirname = "trimmed";
 
-        let res = find_cleaned_fastq(&input, &dirname);
+        let res = auto_find_cleaned_fastq(&input, &dirname);
 
         let path = PathBuf::from(input).join("trimmed_test");
         let r1 = path.join("some_seq_ABC123_R1.fq.gz");

@@ -86,8 +86,8 @@ pub fn get_cli(version: &str) {
         .get_matches();
 
     match args.subcommand() {
-        ("auto", Some(assembly_matches)) => run_spades_auto(assembly_matches, version),
-        ("assembly", Some(_)) => runner::check_spades(),
+        ("auto", Some(clean_matches)) => run_spades_auto(clean_matches, version),
+        ("assembly", Some(assembly_matches)) => run_spades(assembly_matches, version),
         ("check", Some(_)) => runner::check_spades(),
         ("clean", Some(clean_matches)) => clean_spades_files(clean_matches),
         _ => (),
@@ -101,9 +101,21 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
     println!("Starting spade-runner v{}\n", version);
     
     if matches.is_present("dry-run") {
-        io::dry_run(path, &dirname)
+        io::auto_dry_run(path, &dirname)
     } else {
-        io::auto_run_reads(path, &dirname);
+        io::auto_process_input(path, &dirname);
+    }
+}
+
+fn run_spades(matches: &ArgMatches, version: &str) {
+    let path = matches.value_of("dir").unwrap();
+
+    println!("Starting spade-runner v{}\n", version);
+    
+    if matches.is_present("dry-run") {
+        io::dry_run(path)
+    } else {
+        io::process_input(path);
     }
 }
 
