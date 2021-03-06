@@ -9,8 +9,6 @@ pub fn parse_seqdir(input: &str) -> Vec<SeqDirs> {
     let buff = BufReader::new(file);
 
     let mut seqdir = Vec::new();
-    let mut lcounts: usize = 0;
-
     buff.lines()
         .filter_map(|ok| ok.ok())
         .skip(1)
@@ -25,11 +23,9 @@ pub fn parse_seqdir(input: &str) -> Vec<SeqDirs> {
                 panic!("INVALID INPUT FORMAT. \
                     LOOKING FOR ',' or ':' FOUND {}", line);
             }
+            
             seqdir.push(sample);
-            lcounts += 1;
         });
-    
-    println!("Total samples: {}", lcounts);
 
     seqdir
 }
