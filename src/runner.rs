@@ -97,7 +97,7 @@ impl<'a> Runner<'a> {
         let stdout = io::stdout();
         let mut buff = io::BufWriter::new(stdout);
         
-        writeln!(buff, "Target dir\t: {}", &self.reads.id.to_string_lossy())?;
+        writeln!(buff, "ID\t\t: {}", &self.reads.id.to_string_lossy())?;
         writeln!(buff, "Input R1\t: {}", &self.reads.read_1.to_string_lossy())?;
         writeln!(buff, "Input R2\t: {}", &self.reads.read_2.to_string_lossy())?;
         writeln!(buff, "Output\t\t: {}", &self.output.to_string_lossy())?;
