@@ -2,6 +2,7 @@
 // March 2021
 // MIT
 
+mod cleaner;
 mod cli;
 mod finder;
 mod io;
