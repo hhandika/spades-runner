@@ -107,7 +107,7 @@ impl<'a> Runner<'a> {
     }
 
     fn create_symlink(&self) {
-        let contig_sym = format!("{}.fasta", self.reads.id.to_string_lossy());
+        let contig_sym = format!("{}_contigs.fasta", self.reads.id.to_string_lossy());
         let contigs_path = self.output.join("contigs.fasta");
 
         if contigs_path.is_file() {
