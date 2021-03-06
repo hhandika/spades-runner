@@ -108,7 +108,7 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
 }
 
 fn run_spades(matches: &ArgMatches, version: &str) {
-    let path = matches.value_of("dir").unwrap();
+    let path = matches.value_of("input").unwrap();
 
     println!("Starting spade-runner v{}\n", version);
     
