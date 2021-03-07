@@ -37,8 +37,8 @@ pub fn get_system_info() -> Result<()> {
     let total_ram = sysinfo.get_total_memory();
     let gb = 1048576;
 
-    writeln!(handle, "System Information:")?;
-    
+    writeln!(handle, "\x1b[0;33mSystem Information\x1b[0m")?;
+
     writeln!(handle, "Operating System\t: {} {}", 
         sysinfo.get_name().as_ref().unwrap(),
         sysinfo.get_os_version().as_ref().unwrap())?;
