@@ -50,7 +50,7 @@ impl<'a> Runner<'a> {
             reads: input,
             output: dir.join(&input.id),
             symlink_dir: contig_dir,
-            threads: threads,
+            threads,
         }
     }
 
