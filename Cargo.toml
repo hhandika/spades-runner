@@ -7,8 +7,10 @@ edition = "2018"
 [dependencies]
 clap = "2.33.3"
 glob = "0.3.0"
-walkdir = "2.3.1"
+num_cpus = "1.13.0"
+sysinfo = "0.16.4"
 spinners = "1.2.0"
+walkdir = "2.3.1"
 
 [[bin]]
 name = "spr"
