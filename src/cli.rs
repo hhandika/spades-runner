@@ -7,7 +7,7 @@ use crate::io;
 
 
 pub fn get_cli(version: &str) {
-    let args = App::new("renamer")
+    let args = App::new("SPAdes-runner")
         .version(version)
         .about("Batch sequence assembly using SPAdes")
         .author("Heru Handika <hhandi1@lsu.edu>")
