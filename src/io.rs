@@ -3,26 +3,29 @@ use std::io::{self, Result, Write};
 use crate::finder::{self, SeqReads};
 use crate::parser;
 use crate::runner;
+use crate::utils;
 
-pub fn auto_process_input(path: &str, dirname: &str) {
+pub fn auto_process_input(path: &str, dirname: &str, threads: Option<usize>) {
     let samples = finder::auto_find_cleaned_fastq(path, dirname);
-    runner::assemble_reads(&samples);
+    runner::assemble_reads(&samples, threads);
 }
 
-pub fn process_input(input: &str) {
+pub fn process_input(input: &str, threads: Option<usize>) {
     let dirs = parser::parse_seqdir(input);
     let samples = finder::find_cleaned_fastq(&dirs);
-    runner::assemble_reads(&samples);
+    runner::assemble_reads(&samples, threads);
 }
 
 pub fn auto_dry_run(path: &str, dirname: &str) {
     let samples = finder::auto_find_cleaned_fastq(path, dirname);
+    utils::get_system_info().unwrap();
     display_dryrun(& samples).unwrap();
 }
 
 pub fn dry_run(input: &str) {
     let dirs = parser::parse_seqdir(input);
     let samples = finder::find_cleaned_fastq(&dirs);
+    utils::get_system_info().unwrap();
     display_dryrun(&samples).unwrap();
 }
 
