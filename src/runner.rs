@@ -15,7 +15,6 @@ pub fn check_spades() {
         .arg("--version")
         .output()
         .unwrap();
-
     if out.status.success() {
         println!("[OK]\t{}", str::from_utf8(&out.stdout).unwrap().trim());
     } else {
@@ -23,7 +22,7 @@ pub fn check_spades() {
     }
 }
 
-pub fn assemble_reads(reads: &[SeqReads]) {
+pub fn assemble_reads(reads: &[SeqReads], threads: Option<usize>) {
     let dir = Path::new("assemblies");
     utils::check_dir_exists(&dir);
     let contig_dir = dir.join("contig_symlinks");
@@ -32,7 +31,7 @@ pub fn assemble_reads(reads: &[SeqReads]) {
     reads.iter()
         .for_each(|r| {
             println!("\x1b[0;33m================Processing {}================\x1b[0m", &r.id.to_string_lossy());
-            let mut run = Runner::new(&dir, &contig_dir, r);
+            let mut run = Runner::new(&dir, &contig_dir, r, threads);
             run.display_settings().unwrap();
             run.run_spades();
         })
@@ -41,15 +40,17 @@ pub fn assemble_reads(reads: &[SeqReads]) {
 struct Runner<'a> {
     reads: &'a SeqReads,
     output: PathBuf,
-    symlink_dir: &'a Path, 
+    symlink_dir: &'a Path,
+    threads: Option<usize>, 
 }
 
 impl<'a> Runner<'a> {
-    fn new(dir: &Path, contig_dir: &'a Path, input: &'a SeqReads) -> Self {
+    fn new(dir: &Path, contig_dir: &'a Path, input: &'a SeqReads, threads: Option<usize>) -> Self {
         Self {
             reads: input,
             output: dir.join(&input.id),
             symlink_dir: contig_dir,
+            threads: threads,
         }
     }
 
@@ -80,11 +81,30 @@ impl<'a> Runner<'a> {
             .arg(&self.output.clone());
         
         self.get_default_args(&mut out);
+
+        if self.reads.singleton.is_some() {
+            self.get_singleton(&mut out);
+        }
+
+        if self.threads.is_some() {
+            self.get_thread_num(&mut out);
+        }
+
         out.output().unwrap()
     }
     
     fn get_default_args(&self, out: &mut Command) {
         out.arg("--careful");
+    }
+
+    fn get_singleton(&self, out: &mut Command) {
+        out.arg("--pe1-s")
+            .arg(self.reads.singleton.as_ref().unwrap());
+    }
+
+    fn get_thread_num(&self, out: &mut Command) {
+        out.arg("--threads")
+            .arg(self.threads.as_ref().unwrap().to_string());
     }
  
     fn set_spinner(&mut self) -> Spinner {
