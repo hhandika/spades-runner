@@ -116,12 +116,11 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
     let path = matches.value_of("dir").unwrap();
     let dirname = matches.value_of("specify").unwrap();
     let threads = get_thread_num(matches);
-
-    println!("Starting spade-runner v{}\n", version);
     
     if matches.is_present("dry-run") {
         io::auto_dry_run(path, &dirname)
     } else {
+        println!("Starting spade-runner v{}...\n", version);
         io::auto_process_input(path, &dirname, threads);
     }
 }
@@ -129,12 +128,11 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
 fn run_spades(matches: &ArgMatches, version: &str) {
     let path = matches.value_of("input").unwrap();
     let threads = get_thread_num(matches);
-
-    println!("Starting spade-runner v{}\n", version);
     
     if matches.is_present("dry-run") {
         io::dry_run(path)
     } else {
+        println!("Starting spade-runner v{}...\n", version);
         io::process_input(path, threads);
     }
 }
