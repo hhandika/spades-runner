@@ -46,6 +46,15 @@ pub fn get_cli(version: &str) {
                         .help("Checks if the program can find the correct files")
                         .takes_value(false)
                 )
+
+                .arg(
+                    Arg::with_name("threads")
+                        .short("t")
+                        .long("threads")
+                        .help("Sets number of threads")
+                        .takes_value(true)
+                        .value_name("THREAD-NUM")
+                )
             )
 
         .subcommand(
@@ -65,6 +74,15 @@ pub fn get_cli(version: &str) {
                         .long("dry")
                         .help("Checks if the program detect the correct files")
                         .takes_value(false)
+                )
+
+                .arg(
+                    Arg::with_name("threads")
+                        .short("t")
+                        .long("threads")
+                        .help("Sets number of threads")
+                        .takes_value(true)
+                        .value_name("THREAD-NUM")
                 )
 
         )
@@ -97,29 +115,45 @@ pub fn get_cli(version: &str) {
 fn run_spades_auto(matches: &ArgMatches, version: &str) {
     let path = matches.value_of("dir").unwrap();
     let dirname = matches.value_of("specify").unwrap();
+    let threads = get_thread_num(matches);
 
     println!("Starting spade-runner v{}\n", version);
     
     if matches.is_present("dry-run") {
         io::auto_dry_run(path, &dirname)
     } else {
-        io::auto_process_input(path, &dirname);
+        io::auto_process_input(path, &dirname, threads);
     }
 }
 
 fn run_spades(matches: &ArgMatches, version: &str) {
     let path = matches.value_of("input").unwrap();
+    let threads = get_thread_num(matches);
 
     println!("Starting spade-runner v{}\n", version);
     
     if matches.is_present("dry-run") {
         io::dry_run(path)
     } else {
-        io::process_input(path);
+        io::process_input(path, threads);
     }
 }
 
 fn clean_spades_files(matches: &ArgMatches) {
     let path = PathBuf::from(matches.value_of("dir").unwrap());
     cleaner::clean_spades_files(&path);
+}
+
+fn get_thread_num(matches: &ArgMatches) -> Option<usize> {
+    let mut threads = None;
+
+    if matches.is_present("threads") {
+        let num = matches.value_of("threads");
+        match num {
+            Some(n) => threads = Some(n.parse::<usize>().unwrap()),
+            None => panic!("INVALID THREAD NUMBERS!"), 
+        }
+    }
+
+    threads
 }
