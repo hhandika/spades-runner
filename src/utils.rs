@@ -75,7 +75,7 @@ pub fn print_header(text: &str) {
     header.print_header().unwrap();
 }
 
-pub struct PrettyHeader {
+struct PrettyHeader {
     text: String,
     sym: char,
     len: usize,
