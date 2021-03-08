@@ -157,7 +157,7 @@ impl<'a> Runner<'a> {
         let mut handle = io::BufWriter::new(stdout);
 
         writeln!(handle)?;
-        writeln!(handle, "\x1b[1mContigs Path\x1b[0m")?;
+        writeln!(handle, "\x1b[1mContig Path\x1b[0m")?;
         writeln!(handle, "File\t\t: {}", path.to_string_lossy())?;
         writeln!(handle, "Symlink\t\t: {}", symlink.to_string_lossy())?;
         writeln!(handle)?;
