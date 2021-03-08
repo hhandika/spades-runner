@@ -118,7 +118,7 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
     let threads = get_thread_num(matches);
     
     if matches.is_present("dry-run") {
-        io::auto_dry_run(path, &dirname)
+        io::auto_dryrun(path, &dirname)
     } else {
         println!("Starting spade-runner v{}...\n", version);
         io::auto_process_input(path, &dirname, threads);
@@ -130,7 +130,7 @@ fn run_spades(matches: &ArgMatches, version: &str) {
     let threads = get_thread_num(matches);
     
     if matches.is_present("dry-run") {
-        io::dry_run(path)
+        io::dryrun(path)
     } else {
         println!("Starting spade-runner v{}...\n", version);
         io::process_input(path, threads);

@@ -33,7 +33,7 @@ pub fn assemble_reads(reads: &[SeqReads], threads: Option<usize>) {
             println!("\x1b[0;33m================Processing {}================\x1b[0m", &r.id.to_string_lossy());
             let mut run = Runner::new(&dir, &contig_dir, r, threads);
             run.run_spades();
-        })
+        });
 }
 
 struct Runner<'a> {

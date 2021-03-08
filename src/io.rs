@@ -16,20 +16,20 @@ pub fn process_input(input: &str, threads: Option<usize>) {
     runner::assemble_reads(&samples, threads);
 }
 
-pub fn auto_dry_run(path: &str, dirname: &str) {
+pub fn auto_dryrun(path: &str, dirname: &str) {
     let samples = finder::auto_find_cleaned_fastq(path, dirname);
     utils::get_system_info().unwrap();
-    display_dryrun(& samples).unwrap();
+    print_dryrun(& samples).unwrap();
 }
 
-pub fn dry_run(input: &str) {
+pub fn dryrun(input: &str) {
     let dirs = parser::parse_seqdir(input);
     let samples = finder::find_cleaned_fastq(&dirs);
     utils::get_system_info().unwrap();
-    display_dryrun(&samples).unwrap();
+    print_dryrun(&samples).unwrap();
 }
 
-pub fn display_dryrun(dirs: &[SeqReads]) -> Result<()> {
+pub fn print_dryrun(dirs: &[SeqReads]) -> Result<()> {
     let out = io::stdout();
     let mut handle = io::BufWriter::new(out);
 
