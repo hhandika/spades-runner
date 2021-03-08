@@ -1,3 +1,6 @@
+# v0.3.1
+- Fix console output inconsistencies
+
 # v0.3.0
 - Fix the app not recognize singleton.
 - Add command options for custom thread numbers.
