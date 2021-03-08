@@ -130,7 +130,7 @@ impl<'a> Runner<'a> {
             writeln!(buff, "Singleton\t: {}", 
                 &self.reads.singleton.as_ref().unwrap().to_string_lossy())?;
         }
-        
+
         writeln!(buff, "Output\t\t: {}", &self.output.to_string_lossy())?;
         writeln!(buff)?;
 
@@ -155,10 +155,10 @@ impl<'a> Runner<'a> {
     fn print_contig_path(&self, path: &Path, symlink: &Path) -> Result<()>{
         let stdout = io::stdout();
         let mut handle = io::BufWriter::new(stdout);
-
+        writeln!(handle)?;
         writeln!(handle, "Contigs")?;
         writeln!(handle, "File\t\t: {}", path.to_string_lossy())?;
-        writeln!(handle, "Symlink\t: {}", symlink.to_string_lossy())?;
+        writeln!(handle, "Symlink\t\t: {}", symlink.to_string_lossy())?;
 
         Ok(())
     }
