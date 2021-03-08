@@ -155,10 +155,12 @@ impl<'a> Runner<'a> {
     fn print_contig_path(&self, path: &Path, symlink: &Path) -> Result<()>{
         let stdout = io::stdout();
         let mut handle = io::BufWriter::new(stdout);
+
         writeln!(handle)?;
-        writeln!(handle, "Contigs")?;
+        writeln!(handle, "\x1b[0;33mContigs\x1b[0m")?;
         writeln!(handle, "File\t\t: {}", path.to_string_lossy())?;
         writeln!(handle, "Symlink\t\t: {}", symlink.to_string_lossy())?;
+        writeln!(handle)?;
 
         Ok(())
     }
