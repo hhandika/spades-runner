@@ -13,12 +13,11 @@ use crate::utils;
 pub fn check_spades() {
     let out = Command::new("spades")
         .arg("--version")
-        .output()
-        .unwrap();
-    if out.status.success() {
-        println!("[OK]\t{}", str::from_utf8(&out.stdout).unwrap().trim());
-    } else {
-        println!("Spades [ERRORS]");
+        .output();
+    
+    match out {
+        Ok(out) => println!("[OK]\t{}", str::from_utf8(&out.stdout).unwrap().trim()),
+        Err(_) => println!("[NOT FOUND] SPAdes"),
     }
 }
 
