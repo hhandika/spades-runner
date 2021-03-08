@@ -44,7 +44,7 @@ pub fn display_dryrun(dirs: &[SeqReads]) -> Result<()> {
                 writeln!(handle,"Singleton\t: {}", e.singleton.as_ref().unwrap().to_string_lossy()).unwrap();
             }
 
-            writeln!(handle,"Target dir\t: {}", e.id.to_string_lossy()).unwrap();
+            writeln!(handle,"ID\t: {}", e.id.to_string_lossy()).unwrap();
 
             writeln!(handle).unwrap();
         });
