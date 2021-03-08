@@ -43,15 +43,14 @@ fn print_dryrun(dirs: &[SeqReads]) -> Result<()> {
     writeln!(handle,"\x1b[0;33mTotal samples: {}\n\x1b[0m", dirs.len())?;
     dirs.iter()
         .for_each(|e| {
-            writeln!(handle,"\x1b[0;32mOrigin\t\t: {}\x1b[0m", e.dir.to_string_lossy()).unwrap();
+            writeln!(handle,"\x1b[0;32mID\t\t: {}\x1b[0m", e.id.to_string_lossy()).unwrap();
+            writeln!(handle,"Origin\t\t: {}", e.dir.to_string_lossy()).unwrap();
             writeln!(handle,"Read 1\t\t: {}", e.read_1.to_string_lossy()).unwrap();
             writeln!(handle,"Read 2\t\t: {}", e.read_2.to_string_lossy()).unwrap();
 
             if e.singleton.is_some() {
                 writeln!(handle,"Singleton\t: {}", e.singleton.as_ref().unwrap().to_string_lossy()).unwrap();
             }
-
-            writeln!(handle,"ID\t: {}", e.id.to_string_lossy()).unwrap();
 
             writeln!(handle).unwrap();
         });
