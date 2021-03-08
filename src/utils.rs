@@ -3,6 +3,7 @@ use std::path::Path;
 use std::io::{self, Result, Write};
 
 use sysinfo::SystemExt;
+use chrono::NaiveTime;
 
 pub fn check_dir_exists(dir: &Path) {
     if dir.exists() {
@@ -21,11 +22,18 @@ pub fn print_done() -> Result<()> {
     Ok(())
 }
 
-pub fn parse_duration(duration: u64) {
-    let seconds = duration % 60;
-    let minutes = (duration/60) % 60;
-    let hours = (duration/60) / 60;
-    println!("Execution time: {}:{}:{}", hours, minutes, seconds);
+fn parse_duration(duration: u64) -> String {
+    let sec = (duration % 60) as u32;
+    let min = ((duration/60) % 60) as u32;
+    let hours = ((duration/60) / 60) as u32;
+    let time = NaiveTime::from_hms(hours, min, sec);
+    
+    time.format("%H:%M:%S").to_string()
+}
+
+pub fn print_formatted_duration(duration: u64) {
+    let time = parse_duration(duration);
+    println!("Execution time: {}", time);
 }
 
 pub fn split_strings(lines: &str, sep: char) -> Vec<String> {
@@ -57,4 +65,20 @@ pub fn get_system_info() -> Result<()> {
     writeln!(handle)?;
 
     Ok(())
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn time_parsing_test() {
+        let duration = 65;
+        let duration_2 = 3600;
+        let time = parse_duration(duration);
+        let hours = parse_duration(duration_2);
+
+        assert_eq!("00:01:05", time);
+        assert_eq!("01:00:00", hours);
+    }
 }

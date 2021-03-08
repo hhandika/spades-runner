@@ -24,7 +24,7 @@ fn main() {
     if duration.as_secs() < 60 {
         println!("Execution time: {:?}", duration);
     } else {
-        utils::parse_duration(duration.as_secs());
+        utils::print_formatted_duration(duration.as_secs());
     }
 
     println!("Thank you for using spades-runner v{} 😊", &version);
