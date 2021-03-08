@@ -21,7 +21,12 @@ fn main() {
     cli::get_cli(&version);
     let duration = time.elapsed();
 
-    println!("Execution time: {:?}", duration);
+    if duration.as_secs() < 60 {
+        println!("Execution time: {:?}", duration);
+    } else {
+        utils::parse_duration(duration.as_secs());
+    }
+
     println!("Thank you for using spades-runner v{} 😊", &version);
 }
 

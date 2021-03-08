@@ -21,6 +21,13 @@ pub fn print_done() -> Result<()> {
     Ok(())
 }
 
+pub fn parse_duration(duration: u64) {
+    let seconds = duration % 60;
+    let minutes = (duration/60) % 60;
+    let hours = (duration/60) / 60;
+    println!("Execution time: {}:{}:{}", hours, minutes, seconds);
+}
+
 pub fn split_strings(lines: &str, sep: char) -> Vec<String> {
     lines.split(sep)
         .map(|e| e.trim().to_string())
