@@ -10,13 +10,18 @@ pub fn clean_spades_files(path: &Path) {
         .filter(|e| e.path().ends_with("contigs.fasta"))
         .for_each(|e| {
             let path = e.path().parent().unwrap().to_string_lossy();
-            let patterns = format!("{}/*", path);
-            let contents = glob(&patterns)
-                .unwrap()
-                .filter_map(|ok| ok.ok())
-                .collect::<Vec<PathBuf>>();
+            let contents = find_files(&path);
             remove_contents(&contents);
         });
+}
+
+fn find_files(path: &str) -> Vec<PathBuf> {
+    let patterns = format!("{}/*", path);
+
+    glob(&patterns)
+        .unwrap()
+        .filter_map(|ok| ok.ok())
+        .collect()
 }
 
 fn remove_contents(contents: &[PathBuf]) {
