@@ -33,6 +33,7 @@ pub fn check_dependencies() {
     utils::get_system_info().unwrap();
     println!("\x1b[0;33mDependencies:\x1b[0m");
     runner::check_spades();
+    println!();
 }
 
 fn print_dryrun(dirs: &[SeqReads]) -> Result<()> {
