@@ -2,9 +2,7 @@ use std::path::PathBuf;
 use clap::{App, AppSettings, Arg, ArgMatches};
 
 use crate::cleaner;
-use crate::runner;
 use crate::io;
-
 
 pub fn get_cli(version: &str) {
     let args = App::new("SPAdes-runner")
@@ -106,7 +104,7 @@ pub fn get_cli(version: &str) {
     match args.subcommand() {
         ("auto", Some(clean_matches)) => run_spades_auto(clean_matches, version),
         ("assembly", Some(assembly_matches)) => run_spades(assembly_matches, version),
-        ("check", Some(_)) => runner::check_spades(),
+        ("check", Some(_)) => io::check_dependencies(),
         ("clean", Some(clean_matches)) => clean_spades_files(clean_matches),
         _ => (),
     };

@@ -29,7 +29,13 @@ pub fn dryrun(input: &str) {
     print_dryrun(&samples).unwrap();
 }
 
-pub fn print_dryrun(dirs: &[SeqReads]) -> Result<()> {
+pub fn check_dependencies() {
+    utils::get_system_info().unwrap();
+    println!("\x1b[0;33mDependencies:\x1b[0m");
+    runner::check_spades();
+}
+
+fn print_dryrun(dirs: &[SeqReads]) -> Result<()> {
     let out = io::stdout();
     let mut handle = io::BufWriter::new(out);
 
