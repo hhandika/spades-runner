@@ -33,7 +33,7 @@ fn parse_duration(duration: u64) -> String {
 
 pub fn print_formatted_duration(duration: u64) {
     let time = parse_duration(duration);
-    println!("Execution time: {}", time);
+    println!("Execution time (HH:MM:SS): {}", time);
 }
 
 pub fn split_strings(lines: &str, sep: char) -> Vec<String> {
