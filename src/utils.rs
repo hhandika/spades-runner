@@ -69,7 +69,7 @@ pub fn get_system_info() -> Result<()> {
 
 pub fn print_header(text: &str) {
     let header = format!("Processing {}", text);
-    let length = 98;
+    let length = 78;
     let sym = '=';
     let mut header = PrettyHeader::new(&header, sym, length);
     header.print_header().unwrap();
@@ -126,7 +126,13 @@ impl PrettyHeader {
 
     fn get_len(&mut self) {
         self.text_len = self.text.len();
-        self.sym_len = (self.len - self.text_len) / 2;
+
+        if self.len > self.text_len {
+            self.sym_len = (self.len - self.text_len) / 2;
+        } else {
+            self.sym_len = self.len;
+        }
+   
     }
 
     fn print_symbols<W: Write>(&self, io: &mut W) {
