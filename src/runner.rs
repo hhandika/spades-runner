@@ -32,7 +32,6 @@ pub fn assemble_reads(reads: &[SeqReads], threads: Option<usize>) {
         .for_each(|r| {
             println!("\x1b[0;33m================Processing {}================\x1b[0m", &r.id.to_string_lossy());
             let mut run = Runner::new(&dir, &contig_dir, r, threads);
-            run.print_settings().unwrap();
             run.run_spades();
         })
 }
@@ -60,6 +59,7 @@ impl<'a> Runner<'a> {
     }
 
     fn run_spades(&mut self) {
+        self.print_settings().unwrap();
         let spin = self.set_spinner();
         let out = self.call_spades();
         self.check_spades_success(&out);
