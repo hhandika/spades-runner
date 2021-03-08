@@ -125,6 +125,12 @@ impl<'a> Runner<'a> {
         writeln!(buff, "ID\t\t: {}", &self.reads.id.to_string_lossy())?;
         writeln!(buff, "Input R1\t: {}", &self.reads.read_1.to_string_lossy())?;
         writeln!(buff, "Input R2\t: {}", &self.reads.read_2.to_string_lossy())?;
+
+        if self.reads.singleton.is_some() {
+            writeln!(buff, "Singleton\t: {}", 
+                &self.reads.singleton.as_ref().unwrap().to_string_lossy())?;
+        }
+        
         writeln!(buff, "Output\t\t: {}", &self.output.to_string_lossy())?;
         writeln!(buff)?;
 
