@@ -32,7 +32,7 @@ pub fn assemble_reads(reads: &[SeqReads], threads: Option<usize>) {
         .for_each(|r| {
             println!("\x1b[0;33m================Processing {}================\x1b[0m", &r.id.to_string_lossy());
             let mut run = Runner::new(&dir, &contig_dir, r, threads);
-            run.display_settings().unwrap();
+            run.print_settings().unwrap();
             run.run_spades();
         })
 }
@@ -45,7 +45,12 @@ struct Runner<'a> {
 }
 
 impl<'a> Runner<'a> {
-    fn new(dir: &Path, contig_dir: &'a Path, input: &'a SeqReads, threads: Option<usize>) -> Self {
+    fn new(
+        dir: &Path, 
+        contig_dir: &'a Path, 
+        input: &'a SeqReads, 
+        threads: Option<usize>
+    ) -> Self {
         Self {
             reads: input,
             output: dir.join(&input.id),
@@ -113,7 +118,7 @@ impl<'a> Runner<'a> {
         Spinner::new(Spinners::Moon, msg)
     }
 
-    fn display_settings(&self) -> Result<()> {
+    fn print_settings(&self) -> Result<()> {
         let stdout = io::stdout();
         let mut buff = io::BufWriter::new(stdout);
         
@@ -133,9 +138,22 @@ impl<'a> Runner<'a> {
         if contigs_path.is_file() {
             let path = contigs_path.canonicalize().unwrap();
             let symlink = self.symlink_dir.join(contig_sym);
-            unix::fs::symlink(path, symlink).unwrap();
+            unix::fs::symlink(&path, &symlink).unwrap();
+            self.print_contig_path(&path, &symlink).unwrap();
         } else {
-            println!("A contig file is not found.");
+            println!("A contig file is not found. \
+                SPAdes may have failed to run.");
         }
+    }
+
+    fn print_contig_path(&self, path: &Path, symlink: &Path) -> Result<()>{
+        let stdout = io::stdout();
+        let mut handle = io::BufWriter::new(stdout);
+
+        writeln!(handle, "Contigs")?;
+        writeln!(handle, "File\t\t: {}", path.to_string_lossy())?;
+        writeln!(handle, "Symlink\t: {}", symlink.to_string_lossy())?;
+
+        Ok(())
     }
 }
