@@ -17,7 +17,7 @@ pub fn check_spades() {
     
     match out {
         Ok(out) => println!("[OK]\t{}", str::from_utf8(&out.stdout).unwrap().trim()),
-        Err(_) => println!("[NOT FOUND] SPAdes"),
+        Err(_) => println!("[NOT FOUND]\tSPAdes"),
     }
 }
 
