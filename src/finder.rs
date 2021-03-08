@@ -50,7 +50,7 @@ fn get_cleaned_fastq(
 
 pub struct SeqReads {
     pub dir: PathBuf,
-    pub id: PathBuf, 
+    pub id: String, 
     pub read_1: PathBuf,
     pub read_2: PathBuf,
     pub singleton: Option<PathBuf>
@@ -60,7 +60,7 @@ impl SeqReads {
     fn new(dir: &str) -> Self {
         Self {
             dir: PathBuf::from(dir),
-            id: PathBuf::new(),
+            id: String::new(),
             read_1: PathBuf::new(),
             read_2: PathBuf::new(),
             singleton: None,
@@ -93,17 +93,16 @@ impl SeqReads {
                     d if d.contains("SINGLETON") => self.singleton = Some(PathBuf::from(e)),
                     _ => (),
                 }
-            })
-        
+            });
     }
 
     fn get_id(&mut self, target: Option<String>) {
         if target.is_none() {
             let dirs: Vec<_> = self.dir.components().map(|d| d.as_os_str()).collect();
             assert!(dirs.len() > 1, "INVALID FOLDER STRUCTURE TO USE AUTO");
-            self.id = PathBuf::from(dirs[1]);
+            self.id = String::from(dirs[1].to_string_lossy());
         } else {
-            self.id = PathBuf::from(target.as_ref().unwrap());
+            self.id = String::from(target.as_ref().unwrap());
         }
     }
 }
@@ -146,7 +145,7 @@ mod test {
             .for_each(|e| {
                 assert_eq!(r1, e.read_1);
                 assert_eq!(r2, e.read_2);
-                assert_eq!(PathBuf::from("trimmed_test"), e.id);
+                assert_eq!(String::from("trimmed_test"), e.id);
             })
     }
 

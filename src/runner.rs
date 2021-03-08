@@ -57,7 +57,7 @@ impl<'a> Runner<'a> {
     }
 
     fn run_spades(&mut self) {
-        utils::print_header(&self.reads.id.to_string_lossy());
+        utils::print_header(&self.reads.id);
         self.print_settings().unwrap();
         let spin = self.set_spinner();
         let out = self.call_spades();
@@ -121,7 +121,7 @@ impl<'a> Runner<'a> {
         let stdout = io::stdout();
         let mut buff = io::BufWriter::new(stdout);
         
-        writeln!(buff, "ID\t\t: {}", &self.reads.id.to_string_lossy())?;
+        writeln!(buff, "ID\t\t: {}", &self.reads.id)?;
         writeln!(buff, "Input R1\t: {}", &self.reads.read_1.to_string_lossy())?;
         writeln!(buff, "Input R2\t: {}", &self.reads.read_2.to_string_lossy())?;
 
@@ -137,7 +137,7 @@ impl<'a> Runner<'a> {
     }
 
     fn create_symlink(&self) {
-        let contig_sym = format!("{}_contigs.fasta", self.reads.id.to_string_lossy());
+        let contig_sym = format!("{}_contigs.fasta", self.reads.id);
         let contigs_path = self.output.join("contigs.fasta");
 
         if contigs_path.is_file() {
