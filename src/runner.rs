@@ -145,7 +145,7 @@ impl<'a> Runner<'a> {
             let path = contigs_path.canonicalize().unwrap();
             let symlink = self.symlink_dir.join(contig_sym);
             unix::fs::symlink(&path, &symlink).unwrap();
-            self.print_contig_path(&path, &symlink).unwrap();
+            self.print_contig_path(&contigs_path, &symlink).unwrap();
         } else {
             println!("A contig file is not found. \
                 SPAdes may have failed to run.");
