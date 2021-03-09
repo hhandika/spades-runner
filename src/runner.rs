@@ -26,7 +26,7 @@ pub fn assemble_reads(reads: &[SeqReads], threads: Option<usize>) {
     utils::check_dir_exists(&dir);
     let contig_dir = dir.join("contig_symlinks");
     fs::create_dir_all(&contig_dir).unwrap();
-
+    println!("\x1b[0;33mTotal samples: {}\n\x1b[0m", reads.len());
     reads.iter()
         .for_each(|r| {
             let mut run = Runner::new(&dir, &contig_dir, r, threads);
@@ -68,6 +68,7 @@ impl<'a> Runner<'a> {
 
     fn check_spades_success(&self, out: &Output) {
         if !out.status.success() {
+            println!();
             io::stdout().write_all(&out.stdout).unwrap();
             io::stdout().write_all(&out.stderr).unwrap();
         }
@@ -146,8 +147,8 @@ impl<'a> Runner<'a> {
             utils::print_done().unwrap();
             self.print_contig_path(&contigs_path, &symlink).unwrap();
         } else {
-            eprintln!("\x1b[41m[WARNING!]\x1b[0m \
-                SPAdes is failed to run.");
+            eprintln!("\x1b[41m[ERROR]\x1b[0m \
+                SPAdes HAS FAILED. PLEASE CHECK SPAdes LOG FILE FOR DETAILS.");
         }
     }
 
