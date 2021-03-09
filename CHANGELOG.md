@@ -1,3 +1,7 @@
+# v0.3.3
+- Update error messages when SPAdes is failed. 
+- Print total samples count befor assembly.
+
 # v0.3.2
 - Fix issues not recognizing spades when install manually.
 
