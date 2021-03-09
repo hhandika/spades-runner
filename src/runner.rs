@@ -148,7 +148,7 @@ impl<'a> Runner<'a> {
             self.print_contig_path(&contigs_path, &symlink).unwrap();
         } else {
             eprintln!("\x1b[41m[ERROR]\x1b[0m \
-                SPAdes HAS FAILED. PLEASE CHECK SPAdes LOG FILE FOR DETAILS.");
+                SPAdes HAS FAILED. PLEASE CHECK SPAdes OUTPUT ABOVE FOR DETAILS.\n");
         }
     }
 
