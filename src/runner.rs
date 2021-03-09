@@ -11,7 +11,7 @@ use crate::finder::SeqReads;
 use crate::utils;
 
 pub fn check_spades() {
-    let out = Command::new("spades")
+    let out = Command::new("spades.py")
         .arg("--version")
         .output();
     
@@ -75,7 +75,7 @@ impl<'a> Runner<'a> {
     }
 
     fn call_spades(&self) -> Output {
-        let mut out = Command::new("spades");
+        let mut out = Command::new("spades.py");
             
         out.arg("--pe1-1")
             .arg(&self.reads.read_1)
