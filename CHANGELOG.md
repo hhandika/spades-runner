@@ -1,3 +1,6 @@
+# v0.3.2
+- Fix issues not recognizing spades when install manually.
+
 # v0.3.1
 - Fix console output inconsistencies
 
