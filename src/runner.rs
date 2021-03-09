@@ -63,7 +63,6 @@ impl<'a> Runner<'a> {
         let out = self.call_spades();
         self.check_spades_success(&out);
         spin.stop();
-        utils::print_done().unwrap();
         self.create_symlink();
     }
 
@@ -144,10 +143,11 @@ impl<'a> Runner<'a> {
             let path = contigs_path.canonicalize().unwrap();
             let symlink = self.symlink_dir.join(contig_sym);
             unix::fs::symlink(&path, &symlink).unwrap();
+            utils::print_done().unwrap();
             self.print_contig_path(&contigs_path, &symlink).unwrap();
         } else {
-            println!("A contig file is not found. \
-                SPAdes may have failed to run.");
+            eprintln!("\x1b[41m[WARNING!]\x1b[0m \
+                SPAdes is failed to run.");
         }
     }
 
@@ -156,7 +156,7 @@ impl<'a> Runner<'a> {
         let mut handle = io::BufWriter::new(stdout);
 
         writeln!(handle)?;
-        writeln!(handle, "\x1b[1mContig Path\x1b[0m")?;
+        writeln!(handle, "Contig Path")?;
         writeln!(handle, "File\t\t: {}", path.to_string_lossy())?;
         writeln!(handle, "Symlink\t\t: {}", symlink.to_string_lossy())?;
         writeln!(handle)?;
