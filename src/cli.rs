@@ -12,7 +12,7 @@ pub fn get_cli(version: &str) {
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .subcommand(
             App::new("check")
-                .about("Checks if fastp is installed")
+                .about("Checks if SPAdes is installed")
             )
         
         .subcommand(
