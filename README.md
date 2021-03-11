@@ -2,7 +2,16 @@
 ![spades-runner](https://github.com/hhandika/spades-runner/workflows/Tests/badge.svg)
 [![Build Status](https://www.travis-ci.com/hhandika/spades-runner.svg?branch=main)](https://www.travis-ci.com/hhandika/spades-runner)
 
-`spades-runner` is a command-line application to batch assembly next-gen sequencing reads using SPAdes. It aims to simplify batch assembly process with minimal to no-configuration file. If your folder structure similar to fastp-runner or phyluce or use either program to clean your sequencing reads, you can use the auto detection command. The app will detect your folder structure. Therefore, there is no need to use a configuration file. 
+`spades-runner` is a command-line application to batch assembly next-gen sequencing reads using SPAdes. It aims to simplify batch assembly process with minimal to no-configuration file. 
+
+# Table of Contents
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+
+
+# Quick Start
+
+If your folder structure similar to [fastp-runner](https://github.com/hhandika/fastp-runner) or [phyluce](https://phyluce.readthedocs.io/en/latest/) or use either program to clean your sequencing reads, you can use the auto detection command. The app will detect your folder structure. Therefore, there is no need to use a configuration file. 
 
 ```
 spr auto -d [you-clean-read-folder]
@@ -23,7 +32,7 @@ some_species:clean_reads/some_species/trimmed_reads/
 another_species:clean_reads/another_species/trimmed_reads/
 ```
 
-Then, save it your configuration file. The extension of your file does not matter, you could just save it as txt. The command to run spade-runner using a configuration file is as below:
+Then, save your configuration file. The extension for your file does not matter, you could just save it as txt. The command to run spade-runner using a configuration file is as below:
 
 ```
 spr assembly -i [path-to-your-config-file]
