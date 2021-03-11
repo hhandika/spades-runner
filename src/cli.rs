@@ -1,4 +1,7 @@
 use std::path::PathBuf;
+use std::fs::File;
+use std::io::BufReader;
+use std::io::prelude::*;
 use clap::{App, AppSettings, Arg, ArgMatches};
 
 use crate::cleaner;
@@ -203,7 +206,12 @@ fn get_dir(matches: &ArgMatches) -> Option<PathBuf> {
 fn get_args(matches: &ArgMatches) -> Option<String> {
     let mut dir = None;
     if matches.is_present("opts") {
-        dir = Some(String::from(matches.value_of("opts").unwrap()));
+        let input = matches.value_of("opts").unwrap();
+        let fs = File::open(input).unwrap();
+        let mut buff = BufReader::new(fs);
+        let mut args = String::new();
+        buff.read_line(&mut args).expect("CANNOT READ SPADES CONFIG FILE.");
+        dir = Some(String::from(args.trim()));
     }
 
     dir
