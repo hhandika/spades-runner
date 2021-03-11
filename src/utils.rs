@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 use std::io::{self, Result, Write};
 
-use sysinfo::SystemExt;
+use sysinfo::{System,SystemExt};
 use chrono::NaiveTime;
 
 pub fn check_dir_exists(dir: &Path) {
@@ -43,9 +43,7 @@ pub fn split_strings(lines: &str, sep: char) -> Vec<String> {
 }
 
 pub fn get_system_info() -> Result<()> {
-    let mut sysinfo = sysinfo::System::new_all();
-    sysinfo.refresh_all();
-
+    let sysinfo = sysinfo::System::new_all();
     let io = io::stdout();
     let mut handle = io::BufWriter::new(io);
 
@@ -54,17 +52,38 @@ pub fn get_system_info() -> Result<()> {
 
     writeln!(handle, "\x1b[0;33mSystem Information\x1b[0m")?;
 
-    writeln!(handle, "Operating system\t: {:?} {:?}", 
-        sysinfo.get_name(),
-        sysinfo.get_os_version())?;
+    writeln!(handle, "Operating system\t: {} {}", 
+        get_os_name(&sysinfo),
+        get_os_version(&sysinfo))?;
 
-    writeln!(handle, "Kernel version\t\t: {:?}", sysinfo.get_kernel_version())?;
+    writeln!(handle, "Kernel version\t\t: {}", get_kernel_version(&sysinfo))?;
     writeln!(handle, "Available cores\t\t: {:?}", num_cpus::get_physical())?;
     writeln!(handle, "Available threads\t: {:?}", num_cpus::get())?;
     writeln!(handle, "Total RAM\t\t: {} Gb", total_ram/gb)?;
     writeln!(handle)?;
 
     Ok(())
+}
+
+fn get_os_name(sysinfo: &System) -> String {
+    match sysinfo.get_name() {
+        Some(i) => i,
+        None => String::from("Unavailable"),
+    }
+}
+
+fn get_os_version(sysinfo: &System) -> String {
+    match sysinfo.get_os_version() {
+        Some(i) => i,
+        None => String::from("Unavailable"),
+    }
+}
+
+fn get_kernel_version(sysinfo: &System) -> String {
+    match sysinfo.get_kernel_version() {
+        Some(i) => i,
+        None => String::from("Unavailable"),
+    }
 }
 
 pub fn print_header(text: &str) {

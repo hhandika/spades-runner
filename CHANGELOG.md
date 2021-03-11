@@ -1,3 +1,6 @@
+# v0.3.4
+- Fix issues the app panic when the system info unavailable
+
 # v0.3.3
 - Update error messages when SPAdes is failed. 
 - Print total samples count befor assembly.
