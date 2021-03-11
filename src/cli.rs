@@ -124,7 +124,7 @@ pub fn get_cli(version: &str) {
 
         .subcommand(
             App::new("clean")
-                .about("Clean unused SPAdes files.")
+                .about("Cleans unused SPAdes files.")
                 .arg(
                     Arg::with_name("dir")
                         .short("d")

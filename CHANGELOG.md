@@ -1,3 +1,6 @@
+# v0.4.1
+- Update cli command help messages.
+
 # v0.4.0
 - Add option to specify output directory and optional SPAdes parameters.
 
