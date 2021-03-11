@@ -68,21 +68,21 @@ pub fn get_system_info() -> Result<()> {
 fn get_os_name(sysinfo: &System) -> String {
     match sysinfo.get_name() {
         Some(i) => i,
-        None => String::from("Unavailable"),
+        None => String::from("UNKNOWN"),
     }
 }
 
 fn get_os_version(sysinfo: &System) -> String {
     match sysinfo.get_os_version() {
         Some(i) => i,
-        None => String::from("Unavailable"),
+        None => String::from(""),
     }
 }
 
 fn get_kernel_version(sysinfo: &System) -> String {
     match sysinfo.get_kernel_version() {
         Some(i) => i,
-        None => String::from("Unavailable"),
+        None => String::from("UNKNOWN"),
     }
 }
 
