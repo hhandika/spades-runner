@@ -43,12 +43,12 @@ spr --help
 ```
 
 ## Installation
-Installation is similar to simple-qc. For now, please follow the instruction in simple-qc. Then install spades. You could also check if you already have SPAdes installed in your system:
+Installation is similar to [simple-qc](https://github.com/hhandika/simple-qc). For now, please follow the instruction in simple-qc. Then install spades. You could also check if you already have SPAdes installed in your system:
 
 ```
 spr check
 ```
-It will shows your system information and spades version you have. This is example of the result from my computer:
+It will shows your system information and spades version you have. This is an output example from my computer:
 
 ```
 System Information
