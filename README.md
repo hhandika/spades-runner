@@ -10,7 +10,7 @@ spr auto -d [you-clean-read-folder]
 
 Option to use a configuration file is also available. You can use a two-column csv:
 
-|Species        | Folder                                    |
+|Samples        | Path                                      |
 |---------------|-------------------------------------------|
 |some_species   |clean_reads/some_species/trimmed_reads/    |
 |another_species|clean_reads/another_species/trimmed_reads/ |
@@ -18,7 +18,7 @@ Option to use a configuration file is also available. You can use a two-column c
 Or using ini format:
 
 ```
-[species]
+[samples]
 some_species:clean_reads/some_species/trimmed_reads/
 another_species:clean_reads/another_species/trimmed_reads/
 ```
@@ -36,19 +36,20 @@ You can check if the app correctly detect your reads using the `dry run` option:
 spr auto -d [your-clean-read-folder] --dry
 ```
 
-For more option:
+For more options:
 
 ```
 spr --help
 ```
 
 ## Installation
-Installation is similar to [simple-qc](https://github.com/hhandika/simple-qc). For now, please follow the instruction in simple-qc. Then install spades. You could also check if you already have SPAdes installed in your system:
+Installation is similar to [simple-qc](https://github.com/hhandika/simple-qc). For now, please follow the instruction in simple-qc. Then, check if SPAdes is already installed in your system:
 
 ```
 spr check
 ```
-It will shows your system information and spades version you have. This is an output example from my computer:
+
+It will shows your system information and SPAdes version you have. This is an output example from my computer:
 
 ```
 System Information
@@ -61,3 +62,5 @@ Total RAM               : 31 Gb
 Dependencies:
 [OK]    SPAdes genome assembler v3.15.1
 ```
+
+If it shows `[NOT FOUND`], then install SPAdes. You can find the instruction to install SPAdes [here](https://cab.spbu.ru/software/spades/). After installation, you should `check` again if the app can recognize SPAdes installation.
