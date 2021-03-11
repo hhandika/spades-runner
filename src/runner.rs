@@ -159,6 +159,11 @@ impl<'a> Runner<'a> {
         }
 
         writeln!(buff, "Output\t\t: {}", &self.output.to_string_lossy())?;
+
+        if self.args.is_some() {
+            writeln!(buff, "Opt params\t: {}", &self.args.as_ref().unwrap())?;
+        }
+        
         writeln!(buff)?;
 
         Ok(())
