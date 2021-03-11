@@ -1,3 +1,6 @@
+# v0.3.5
+- Fix sysinfo print that shows Some.
+
 # v0.3.4
 - Fix issues the app panic when the system info unavailable
 
