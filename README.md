@@ -84,3 +84,24 @@ Dependencies:
 ```
 
 If it shows `[NOT FOUND`], then install SPAdes. You can find the instruction to install SPAdes [here](https://cab.spbu.ru/software/spades/). After installation, you should `check` again if the app can recognize SPAdes installation.
+
+# Commands
+
+All available sub-command options:
+
+```
+USAGE:
+    spr <SUBCOMMAND>
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+SUBCOMMANDS:
+    assembly    Runs SPAdes
+    auto        Auto find clean reads and assembly them
+    check       Checks if SPAdes is installed
+    clean       Cleans unused SPAdes files.
+    help        Prints this message or the help of the given subcommand(s)
+```
+
