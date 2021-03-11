@@ -24,7 +24,8 @@ pub fn check_spades() {
 pub fn assemble_reads(
     reads: &[SeqReads], 
     threads: &Option<usize>,
-    outdir: &Option<PathBuf>
+    outdir: &Option<PathBuf>,
+    args: &Option<String>
 ) {
     let dir = get_outdir(&outdir);
     utils::check_dir_exists(&dir);
@@ -33,7 +34,7 @@ pub fn assemble_reads(
     println!("\x1b[0;33mTotal samples: {}\n\x1b[0m", reads.len());
     reads.iter()
         .for_each(|r| {
-            let mut run = Runner::new(&dir, &contig_dir, r, threads);
+            let mut run = Runner::new(&dir, &contig_dir, r, threads, args);
             run.run_spades();
         });
 }
@@ -50,7 +51,8 @@ struct Runner<'a> {
     reads: &'a SeqReads,
     output: PathBuf,
     symlink_dir: &'a Path,
-    threads: &'a Option<usize>, 
+    threads: &'a Option<usize>,
+    args: &'a Option<String> 
 }
 
 impl<'a> Runner<'a> {
@@ -58,13 +60,15 @@ impl<'a> Runner<'a> {
         dir: &Path, 
         contig_dir: &'a Path, 
         input: &'a SeqReads, 
-        threads: &'a Option<usize>
+        threads: &'a Option<usize>,
+        args: &'a Option<String>
     ) -> Self {
         Self {
             reads: input,
             output: dir.join(&input.id),
             symlink_dir: contig_dir,
             threads,
+            args
         }
     }
 
@@ -96,7 +100,7 @@ impl<'a> Runner<'a> {
             .arg("-o")
             .arg(&self.output.clone());
         
-        self.get_default_args(&mut out);
+        self.get_spades_args(&mut out);
 
         if self.reads.singleton.is_some() {
             self.get_singleton(&mut out);
@@ -108,9 +112,21 @@ impl<'a> Runner<'a> {
 
         out.output().unwrap()
     }
+
+    fn get_spades_args(&self, out: &mut Command) {
+        if self.args.is_some() {
+            self.get_opt_args(out);
+        } else {
+            self.get_default_args(out);
+        }
+    }
     
     fn get_default_args(&self, out: &mut Command) {
         out.arg("--careful");
+    }
+
+    fn get_opt_args(&self, out: &mut Command) {
+        out.arg(self.args.as_ref().unwrap());
     }
 
     fn get_singleton(&self, out: &mut Command) {

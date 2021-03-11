@@ -10,20 +10,22 @@ pub fn auto_process_input(
     path: &str, 
     dirname: &str, 
     threads: &Option<usize>, 
-    outdir: &Option<PathBuf>
+    outdir: &Option<PathBuf>,
+    args: &Option<String>
 ) {
     let samples = finder::auto_find_cleaned_fastq(path, dirname);
-    runner::assemble_reads(&samples, threads, outdir);
+    runner::assemble_reads(&samples, threads, outdir, args);
 }
 
 pub fn process_input(
     input: &str, 
     threads: &Option<usize>, 
-    outdir: &Option<PathBuf>
+    outdir: &Option<PathBuf>,
+    args: &Option<String>
 ) {
     let dirs = parser::parse_seqdir(input);
     let samples = finder::find_cleaned_fastq(&dirs);
-    runner::assemble_reads(&samples, threads, outdir);
+    runner::assemble_reads(&samples, threads, outdir, args);
 }
 
 pub fn auto_dryrun(path: &str, dirname: &str) {

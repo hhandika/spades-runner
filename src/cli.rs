@@ -62,6 +62,14 @@ pub fn get_cli(version: &str) {
                         .takes_value(true)
                         .value_name("THREAD-NUM")
                 )
+
+                .arg(
+                    Arg::with_name("opts")
+                        .long("opts")
+                        .help("Sets optional SPAdes params")
+                        .takes_value(true)
+                        .value_name("OPTIONAL PARAMS")
+                )
             )
 
         .subcommand(
@@ -101,6 +109,14 @@ pub fn get_cli(version: &str) {
                         .value_name("OUTPUT DIR")   
                 )
 
+                .arg(
+                    Arg::with_name("opts")
+                        .long("opts")
+                        .help("Sets optional SPAdes params")
+                        .takes_value(true)
+                        .value_name("OPTIONAL PARAMS")
+                )
+
         )
 
         .subcommand(
@@ -133,11 +149,12 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
     let dirname = matches.value_of("specify").unwrap();
     let threads = get_thread_num(matches);
     let dir = get_dir(matches);
+    let args = get_args(matches);
     if matches.is_present("dry-run") {
         io::auto_dryrun(path, &dirname)
     } else {
         println!("Starting spade-runner v{}...\n", version);
-        io::auto_process_input(path, &dirname, &threads, &dir);
+        io::auto_process_input(path, &dirname, &threads, &dir, &args);
     }
 }
 
@@ -145,11 +162,12 @@ fn run_spades(matches: &ArgMatches, version: &str) {
     let path = matches.value_of("input").unwrap();
     let threads = get_thread_num(matches);
     let dir = get_dir(matches);
+    let args = get_args(matches);
     if matches.is_present("dry-run") {
         io::dryrun(path)
     } else {
         println!("Starting spade-runner v{}...\n", version);
-        io::process_input(path, &threads, &dir);
+        io::process_input(path, &threads, &dir, &args);
     }
 }
 
@@ -173,10 +191,20 @@ fn get_thread_num(matches: &ArgMatches) -> Option<usize> {
 }
 
 fn get_dir(matches: &ArgMatches) -> Option<PathBuf> {
+    let mut dir = None;
+
     if matches.is_present("output") {
-        let dir = PathBuf::from(matches.value_of("output").unwrap());
-        Some(dir);
+        dir = Some(PathBuf::from(matches.value_of("output").unwrap()));
     }
 
-    None
+    dir
+}
+
+fn get_args(matches: &ArgMatches) -> Option<String> {
+    let mut dir = None;
+    if matches.is_present("opts") {
+        dir = Some(String::from(matches.value_of("opts").unwrap()));
+    }
+
+    dir
 }
