@@ -54,11 +54,11 @@ pub fn get_system_info() -> Result<()> {
 
     writeln!(handle, "\x1b[0;33mSystem Information\x1b[0m")?;
 
-    writeln!(handle, "Operating system\t: {} {}", 
-        sysinfo.get_name().as_ref().unwrap(),
-        sysinfo.get_os_version().as_ref().unwrap())?;
+    writeln!(handle, "Operating system\t: {:?} {:?}", 
+        sysinfo.get_name(),
+        sysinfo.get_os_version())?;
 
-    writeln!(handle, "Kernel version\t\t: {}", sysinfo.get_kernel_version().as_ref().unwrap())?;
+    writeln!(handle, "Kernel version\t\t: {:?}", sysinfo.get_kernel_version())?;
     writeln!(handle, "Available cores\t\t: {:?}", num_cpus::get_physical())?;
     writeln!(handle, "Available threads\t: {:?}", num_cpus::get())?;
     writeln!(handle, "Total RAM\t\t: {} Gb", total_ram/gb)?;
