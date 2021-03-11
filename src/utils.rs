@@ -8,9 +8,9 @@ use chrono::NaiveTime;
 pub fn check_dir_exists(dir: &Path) {
     if dir.exists() {
         panic!("{:?} DIR EXISTS. PLEASE RENAME OR REMOVE IT", dir);
-    } else { // if not create one
+    } else {
         fs::create_dir_all(dir)
-            .expect("CAN'T CREATE CLEAN READ DIR");
+            .expect("CAN'T CREATE DIR");
     }
 }
 

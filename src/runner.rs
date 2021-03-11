@@ -21,8 +21,12 @@ pub fn check_spades() {
     }
 }
 
-pub fn assemble_reads(reads: &[SeqReads], threads: Option<usize>) {
-    let dir = Path::new("assemblies");
+pub fn assemble_reads(
+    reads: &[SeqReads], 
+    threads: &Option<usize>,
+    outdir: &Option<PathBuf>
+) {
+    let dir = get_outdir(&outdir);
     utils::check_dir_exists(&dir);
     let contig_dir = dir.join("contig_symlinks");
     fs::create_dir_all(&contig_dir).unwrap();
@@ -34,11 +38,19 @@ pub fn assemble_reads(reads: &[SeqReads], threads: Option<usize>) {
         });
 }
 
+fn get_outdir(outdir: &Option<PathBuf>) -> PathBuf {
+    match outdir {
+        Some(dir) => dir.clone(),
+        None => PathBuf::from("assemblies")
+    }
+}
+
+
 struct Runner<'a> {
     reads: &'a SeqReads,
     output: PathBuf,
     symlink_dir: &'a Path,
-    threads: Option<usize>, 
+    threads: &'a Option<usize>, 
 }
 
 impl<'a> Runner<'a> {
@@ -46,7 +58,7 @@ impl<'a> Runner<'a> {
         dir: &Path, 
         contig_dir: &'a Path, 
         input: &'a SeqReads, 
-        threads: Option<usize>
+        threads: &'a Option<usize>
     ) -> Self {
         Self {
             reads: input,
@@ -164,4 +176,20 @@ impl<'a> Runner<'a> {
 
         Ok(())
     }
+}
+
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn outdir_test() {
+        let path = PathBuf::from("test/assemblies/");
+        let output = Some(path.clone());
+        let outdir = get_outdir(&output);
+
+        assert_eq!(PathBuf::from(&path), outdir);
+    }
+
 }

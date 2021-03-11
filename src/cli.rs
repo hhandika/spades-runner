@@ -39,6 +39,15 @@ pub fn get_cli(version: &str) {
                 )
 
                 .arg(
+                    Arg::with_name("output")
+                        .short("o")
+                        .long("output")
+                        .help("Specifies output folders")
+                        .takes_value(true)
+                        .value_name("OUTPUT DIR")   
+                )
+
+                .arg(
                     Arg::with_name("dry-run")
                         .long("dry")
                         .help("Checks if the program can find the correct files")
@@ -83,6 +92,15 @@ pub fn get_cli(version: &str) {
                         .value_name("THREAD-NUM")
                 )
 
+                .arg(
+                    Arg::with_name("output")
+                        .short("o")
+                        .long("output")
+                        .help("Specifies output folders")
+                        .takes_value(true)
+                        .value_name("OUTPUT DIR")   
+                )
+
         )
 
         .subcommand(
@@ -114,24 +132,24 @@ fn run_spades_auto(matches: &ArgMatches, version: &str) {
     let path = matches.value_of("dir").unwrap();
     let dirname = matches.value_of("specify").unwrap();
     let threads = get_thread_num(matches);
-    
+    let dir = get_dir(matches);
     if matches.is_present("dry-run") {
         io::auto_dryrun(path, &dirname)
     } else {
         println!("Starting spade-runner v{}...\n", version);
-        io::auto_process_input(path, &dirname, threads);
+        io::auto_process_input(path, &dirname, &threads, &dir);
     }
 }
 
 fn run_spades(matches: &ArgMatches, version: &str) {
     let path = matches.value_of("input").unwrap();
     let threads = get_thread_num(matches);
-    
+    let dir = get_dir(matches);
     if matches.is_present("dry-run") {
         io::dryrun(path)
     } else {
         println!("Starting spade-runner v{}...\n", version);
-        io::process_input(path, threads);
+        io::process_input(path, &threads, &dir);
     }
 }
 
@@ -152,4 +170,13 @@ fn get_thread_num(matches: &ArgMatches) -> Option<usize> {
     }
 
     threads
+}
+
+fn get_dir(matches: &ArgMatches) -> Option<PathBuf> {
+    if matches.is_present("output") {
+        let dir = PathBuf::from(matches.value_of("output").unwrap());
+        Some(dir);
+    }
+
+    None
 }
