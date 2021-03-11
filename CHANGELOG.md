@@ -1,8 +1,11 @@
+# v0.4.0
+- Add option to specify output directory and optional SPAdes parameters.
+
 # v0.3.5
 - Fix sysinfo print that shows Some.
 
 # v0.3.4
-- Fix issues the app panic when the system info unavailable
+- Fix issues the app panic when the system info unavailable.
 
 # v0.3.3
 - Update error messages when SPAdes is failed. 
@@ -12,7 +15,7 @@
 - Fix issues not recognizing spades when install manually.
 
 # v0.3.1
-- Fix console output inconsistencies
+- Fix console output inconsistencies.
 
 # v0.3.0
 - Fix the app not recognize singleton.
