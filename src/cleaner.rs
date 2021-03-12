@@ -8,7 +8,7 @@ use walkdir::WalkDir;
 pub fn clean_spades_files(path: &Path) {
     let io = io::stdout();
     let mut handle = io::BufWriter::new(io);
-    writeln!(handle, "\x1b[0;33mRemoved files:\x1b[0m\n").unwrap();
+    writeln!(handle, "\x1b[0;33mRemoved files and directories:\x1b[0m").unwrap();
     WalkDir::new(path).into_iter()
         .filter_map(|ok| ok.ok())
         .filter(|e| e.path().ends_with("spades.log"))
