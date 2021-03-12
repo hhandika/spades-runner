@@ -1,3 +1,6 @@
+# v0.4.2
+- Print removed files.
+
 # v0.4.1
 - Update cli command help messages.
 
