@@ -7,7 +7,11 @@
 # Table of Contents
 - [Quick Start](#quick-start)
 - [Installation](#installation)
-- [Command Structure](#command-structure)
+- [Usages](#usages)
+    - [Command Structure](#command-structure)
+    - [Auto Assembly](#auto-assembly)
+    - [Manual Assembly with a Config File](#manual-assembly-with-a-config-file)
+    - [Threading](#threading)
 - [State of Code](#state-of-code)
 
 
@@ -125,7 +129,8 @@ Dependencies:
 
 If it shows `[NOT FOUND`], then install SPAdes. You can find the instruction to install SPAdes [here](https://cab.spbu.ru/software/spades/). After installation, you should `check` again if the app can recognize SPAdes installation.
 
-# Command Structure
+# Usages
+## Command Structure
 
 All available sub-command options:
 
@@ -144,6 +149,51 @@ SUBCOMMANDS:
     clean       Cleans unused SPAdes files.
     help        Prints this message or the help of the given subcommand(s)
 ```
+
+Options available for auto assembly:
+
+```
+USAGE:
+    spr auto [FLAGS] [OPTIONS] --dir <CLEAN-READ DIR>
+
+FLAGS:
+        --dry        Checks if the program can find the correct files
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -d, --dir <CLEAN-READ DIR>      Inputs a directory for auto search
+        --opts <OPTIONAL PARAMS>    Sets optional SPAdes params
+    -o, --output <OUTPUT DIR>       Specifies output folders
+    -s, --specify <DIR NAME>        Specifies clean read directory names [default: trimmed]
+    -t, --threads <THREAD-NUM>      Sets number of threads
+```
+
+Options available for assembly with a config file:
+
+```
+USAGE:
+    spr assembly [FLAGS] [OPTIONS]
+
+FLAGS:
+        --dry        Checks if the program detect the correct files
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -i, --input <INPUT>             Inputs a config file
+        --opts <OPTIONAL PARAMS>    Sets optional SPAdes params
+    -o, --output <OUTPUT DIR>       Specifies output folders
+    -t, --threads <THREAD-NUM>      Sets number of threads
+```
+
+## Auto Assembly
+
+## Manual Assembly with a Config File
+
+## Threading
+
+Threading options is available for auto and manual assembly using the commands `-t` or `--threads`.
 
 # State of Code
 The program is still under-development. However, it is stable and tested. If you find any bugs or if you want to request a feature, please open an [issue for this repo](https://github.com/hhandika/spades-runner/issues).
