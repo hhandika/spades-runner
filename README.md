@@ -44,7 +44,7 @@ For example
 spr assembly -i bunomys_assembly.config
 ```
 
-You can check if the app correctly detect your reads using the `dry run` option:
+You can check if the app correctly detect your reads using the `dry-run` option:
 
 ```
 spr auto -d [your-clean-read-folder] --dry
@@ -55,6 +55,22 @@ or
 ```
 spr assembly -i [path-to-your-config-file] --dry
 ```
+
+By default, the app passes `--careful` options to SPAdes. The full command is equal to running SPAdes using this command:
+
+```
+spades --pe1-1 [path-to-read1] --pe1-2 [path-to-read2] -o [target-output-dir] --careful
+```
+
+It will add `--pe1-s [path-to-singleton/unpaired-read]' if the app detects a singleton read in your sample directory.
+
+You could specify any SPADes options by using the `--opts` option. The given parameters should be in a qoute and starts with `params=`. For example, here we define max memory size to 16 gb. The program will override the careful option used in the default settings. Hence, we will need to pass it again if we want to use it. 
+
+```
+spr-dev-3 auto -d clean_reads/ --opts "params=--careful -m 16"
+```
+
+The app won't check the correctness of the parameters. Instead, it will let SPAdes checking them. This way it gives user flexibility to pass any SPAdes cli parameters available for pair-end reads. 
 
 For more options:
 
