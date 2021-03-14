@@ -75,7 +75,7 @@ pub fn get_cli(version: &str) {
 
         .subcommand(
             App::new("assembly")
-                .about("Runs SPAdes")
+                .about("Runs SPAdes using a config file")
                 .arg(
                     Arg::with_name("input")
                         .short("i")
