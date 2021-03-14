@@ -1,3 +1,6 @@
+# v0.5.1
+- Update command help messages.
+
 # v0.5.0
 - Now, user can use any SPAdes parameters for pair-end reads.
 
