@@ -67,7 +67,7 @@ It will add `--pe1-s [path-to-singleton/unpaired-read]' if the app detects a sin
 You could specify any SPADes options by using the `--opts` option. The given parameters should be in a qoute and starts with `params=`. For example, here we define max memory size to 16 gb. The program will override the careful option used in the default settings. Hence, we will need to pass it again if we want to use it. 
 
 ```
-spr-dev-3 auto -d clean_reads/ --opts "params=--careful -m 16"
+spr auto -d clean_reads/ --opts "params=--careful -m 16"
 ```
 
 The app won't check the correctness of the parameters. Instead, it will let SPAdes checking them. This way it gives user flexibility to pass any SPAdes cli parameters available for pair-end reads. 
