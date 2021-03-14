@@ -7,6 +7,8 @@
 # Table of Contents
 - [Quick Start](#quick-start)
 - [Installation](#installation)
+- [Command Structure](#command-structure)
+- [State of Code](#state-of-code)
 
 
 # Quick Start
@@ -62,9 +64,21 @@ By default, the app passes `--careful` options to SPAdes. The full command is eq
 spades --pe1-1 [path-to-read1] --pe1-2 [path-to-read2] -o [target-output-dir] --careful
 ```
 
-It will add `--pe1-s [path-to-singleton/unpaired-read]' if the app detects a singleton read in your sample directory.
+It will add `--pe1-s [path-to-singleton/unpaired-read]` if the app detects a singleton read in your sample directory.
 
-You could specify any SPADes options by using the `--opts` option. The given parameters should be in a qoute and starts with `params=`. For example, here we define max memory size to 16 gb. The program will override the careful option used in the default settings. Hence, we will need to pass it again if we want to use it. 
+You can also specify the number of threads by passing `-t` or `--threads` option:
+
+```
+spr auto -d [your-clean-read-folder] -t [number-of-threads]
+```
+
+or if you use a config file:
+
+```
+spr assembly -i [path-to-your-config-file] -t [number-of-threads]
+```
+
+Other SPAdes parameter is available by using `--opts` option. The given parameters should be in a qoute and starts with `params=`. For example, here we define max memory size to 16 gb. The program will override the careful option used in the default settings. Hence, we will need to pass it again if we want to use it. 
 
 ```
 spr auto -d clean_reads/ --opts "params=--careful -m 16"
@@ -78,7 +92,17 @@ For more options:
 spr --help
 ```
 
-## Installation
+Options for specific subcommands:
+
+```
+spr <SUBCOMMAND> --help
+```
+
+```
+spr auto --help
+```
+
+# Installation
 Installation is similar to [simple-qc](https://github.com/hhandika/simple-qc). For now, please follow the instruction in simple-qc. Then, check if SPAdes is already installed in your system:
 
 ```
@@ -101,7 +125,7 @@ Dependencies:
 
 If it shows `[NOT FOUND`], then install SPAdes. You can find the instruction to install SPAdes [here](https://cab.spbu.ru/software/spades/). After installation, you should `check` again if the app can recognize SPAdes installation.
 
-# Commands
+# Command Structure
 
 All available sub-command options:
 
@@ -114,10 +138,12 @@ FLAGS:
     -V, --version    Prints version information
 
 SUBCOMMANDS:
-    assembly    Runs SPAdes
+    assembly    Runs SPAdes using a config file
     auto        Auto find clean reads and assembly them
     check       Checks if SPAdes is installed
     clean       Cleans unused SPAdes files.
     help        Prints this message or the help of the given subcommand(s)
 ```
 
+# State of Code
+The program is still under-development. However, it is stable and tested. If you find any bugs or if you want to request a feature, please open an [issue for this repo](https://github.com/hhandika/spades-runner/issues).
