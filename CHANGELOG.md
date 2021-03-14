@@ -1,3 +1,6 @@
+# v0.5.0
+- Now, user can use any SPAdes parameters for pair-end reads.
+
 # v0.4.2
 - Print removed files.
 
