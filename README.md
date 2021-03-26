@@ -129,7 +129,7 @@ Dependencies:
 [OK]    SPAdes genome assembler v3.15.1
 ```
 
-If it shows `[NOT FOUND`], then install SPAdes. You can find the instruction to install SPAdes [here](https://cab.spbu.ru/software/spades/). After installation, you should `check` again if the app can recognize SPAdes installation.
+If it shows `[NOT FOUND]`, then install SPAdes. You can find the instruction to install SPAdes [here](https://cab.spbu.ru/software/spades/). After installation, you should `check` again if the app can recognize SPAdes installation.
 
 ## Usages
 
