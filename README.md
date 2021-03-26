@@ -1,23 +1,24 @@
 # spades-runner
+
 ![spades-runner](https://github.com/hhandika/spades-runner/workflows/Tests/badge.svg)
 [![Build Status](https://www.travis-ci.com/hhandika/spades-runner.svg?branch=main)](https://www.travis-ci.com/hhandika/spades-runner)
 
-`spades-runner` is a command-line application to batch assembly next-gen sequencing reads using SPAdes. It aims to simplify batch assembly process with minimal to no-configuration file. 
+`spades-runner` is a command-line application to batch assembly next-gen sequencing reads using SPAdes. It aims to simplify batch assembly process with minimal to no-configuration file.
 
-# Table of Contents
+## Table of Contents
+
 - [Quick Start](#quick-start)
 - [Installation](#installation)
 - [Usages](#usages)
-    - [Command Structure](#command-structure)
-    - [Auto Assembly](#auto-assembly)
-    - [Manual Assembly with a Config File](#manual-assembly-with-a-config-file)
-    - [Threading](#threading)
+  - [Command Structure](#command-structure)
+  - [Auto Assembly](#auto-assembly)
+  - [Manual Assembly with a Config File](#manual-assembly-with-a-config-file)
+  - [Threading](#threading)
 - [State of Code](#state-of-code)
 
+## Quick Start
 
-# Quick Start
-
-If your folder structure similar to [fastp-runner](https://github.com/hhandika/fastp-runner) or [phyluce](https://phyluce.readthedocs.io/en/latest/) or use either program to clean your sequencing reads, you can use the auto detection command. The app will detect your folder structure. Therefore, there is no need to use a configuration file. 
+If your folder structure similar to [fastp-runner](https://github.com/hhandika/fastp-runner) or [phyluce](https://phyluce.readthedocs.io/en/latest/) or use either program to clean your sequencing reads, you can use the auto detection command. The app will detect your folder structure. Therefore, there is no need to use a configuration file.
 
 ```
 spr auto -d [you-clean-read-folder]
@@ -25,10 +26,10 @@ spr auto -d [you-clean-read-folder]
 
 An option to use a configuration file is also available. You can use a two-column csv:
 
-|Samples        | Path                                      |
-|---------------|-------------------------------------------|
-|some_species   |clean_reads/some_species/trimmed_reads/    |
-|another_species|clean_reads/another_species/trimmed_reads/ |
+| Samples         | Path                                       |
+| --------------- | ------------------------------------------ |
+| some_species    | clean_reads/some_species/trimmed_reads/    |
+| another_species | clean_reads/another_species/trimmed_reads/ |
 
 Or using ini format:
 
@@ -56,7 +57,7 @@ You can check if the app correctly detect your reads using the `dry-run` option:
 spr auto -d [your-clean-read-folder] --dry
 ```
 
-or 
+or
 
 ```
 spr assembly -i [path-to-your-config-file] --dry
@@ -82,13 +83,13 @@ or if you use a config file:
 spr assembly -i [path-to-your-config-file] -t [number-of-threads]
 ```
 
-Other SPAdes parameter is available by using `--opts` option. The given parameters should be in a qoute and starts with `params=`. For example, here we define max memory size to 16 gb. The program will override the careful option used in the default settings. Hence, we will need to pass it again if we want to use it. 
+Other SPAdes parameter is available by using `--opts` option. The given parameters should be in a qoute and starts with `params=`. For example, here we define max memory size to 16 gb. The program will override the careful option used in the default settings. Hence, we will need to pass it again if we want to use it.
 
 ```
 spr auto -d clean_reads/ --opts "params=--careful -m 16"
 ```
 
-The app won't check the correctness of the parameters. Instead, it will let SPAdes checking them. This way it gives user flexibility to pass any SPAdes cli parameters available for pair-end reads. 
+The app won't check the correctness of the parameters. Instead, it will let SPAdes checking them. This way it gives user flexibility to pass any SPAdes cli parameters available for pair-end reads.
 
 For more options:
 
@@ -106,7 +107,8 @@ spr <SUBCOMMAND> --help
 spr auto --help
 ```
 
-# Installation
+## Installation
+
 Installation is similar to [simple-qc](https://github.com/hhandika/simple-qc). For now, please follow the instruction in simple-qc. Then, check if SPAdes is already installed in your system:
 
 ```
@@ -129,8 +131,9 @@ Dependencies:
 
 If it shows `[NOT FOUND`], then install SPAdes. You can find the instruction to install SPAdes [here](https://cab.spbu.ru/software/spades/). After installation, you should `check` again if the app can recognize SPAdes installation.
 
-# Usages
-## Command Structure
+## Usages
+
+### Command Structure
 
 All available sub-command options:
 
@@ -187,13 +190,46 @@ OPTIONS:
     -t, --threads <THREAD-NUM>      Sets number of threads
 ```
 
-## Auto Assembly
+### Auto Assembly
 
-## Manual Assembly with a Config File
+More update coming soon...
 
-## Threading
+### Manual Assembly with a Config File
 
-Threading options is available for auto and manual assembly using the commands `-t` or `--threads`.
+More update coming soon...
 
-# State of Code
+### Threading
+
+Threading options is available for auto and manual assembly using the commands `-t` or `--threads`. If you don't know the number of threads available in your system, you can use `spr check` to find it out. The result is as below:
+
+```{Bash}
+System Information
+Operating system        : openSUSE Tumbleweed 20210210
+Kernel version          : 5.10.12-1-default
+Available cores         : 12
+Available threads       : 24
+Total RAM               : 31 Gb
+
+Dependencies:
+[OK]    SPAdes genome assembler v3.15.1
+```
+
+Then, use the flag -t to specify the threads. It also works with the manual assembly.
+
+```{Bash}
+spr auto -d [your-clean-read-folder] -t [number-of-threads]
+```
+
+For example:
+
+```{Bash}
+spr auto -d /clean_reads -t 8
+```
+
+## State of Code
+
 The program is still under-development. However, it is stable and tested. If you find any bugs or if you want to request a feature, please open an [issue for this repo](https://github.com/hhandika/spades-runner/issues).
+
+```
+
+```
